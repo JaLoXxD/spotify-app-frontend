@@ -10,7 +10,7 @@ export class TrackService {
 
     constructor(private _http: HttpClient) {}
 
-    public getUserTracks(options: Object) {
-        return this._http.get(`https://api.spotify.com/v1/me/tracks`, options);
+    public getUserTracks(options: Object, limit: number) {
+        return this._http.get<any>(`${this._spotifyApiUrl}/me/tracks?limit=${limit}`, options);
     }
 }

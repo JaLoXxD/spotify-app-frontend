@@ -1,0 +1,42 @@
+p {
+    margin-bottom: 0;
+}
+
+.tracks-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.tracks-container .track-card {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: default;
+}
+
+.tracks-container .track-card:hover {
+    background-color: rgb(207, 216, 222);
+}
+
+.tracks-container .track-card img {
+    width: 50px;
+    margin-top: auto;
+}
+
+.tracks-container .track-card .track-name {
+    font-weight: bold;
+}
+
+.tracks-container .track-card a {
+    text-decoration: none;
+    transition: all 0.5s ease-in-out;
+}
+
+.tracks-container .track-card a:hover {
+    text-decoration: underline;
+}

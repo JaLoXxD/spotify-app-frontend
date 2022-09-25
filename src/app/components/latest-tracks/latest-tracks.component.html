@@ -1,0 +1,15 @@
+<div class="tracks-container">
+    <div class="track-card" *ngFor="let currentTrack of tracks; let i = index">
+        <p>{{i + 1}}</p>
+        <img [src]="currentTrack.track.album.images[0].url" alt="">
+        <div class="track-info">
+            <p class="track-name">{{currentTrack.track.name}}</p>
+            <p class="track-artists"><span *ngFor="let artist of currentTrack.track.artists">{{artist.name}}</span></p>
+        </div>
+        <div class="ms-auto">
+            <a [href]="currentTrack.track.album.external_urls.spotify">
+                {{currentTrack.track.album.name}}
+            </a>
+        </div>
+    </div>
+</div>

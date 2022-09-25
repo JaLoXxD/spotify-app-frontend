@@ -5,9 +5,12 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-    constructor(private _http: HttpClient) {}
     private _apiUrl: string = environment.apiUrl;
-    private _spotifyApiUrl: string = environment.spotifyApiUrl;
+    private _spotifyApiUrl: string = environment.spotifyAccountApiUrl;
+
+    public isLogin: boolean = false;
+
+    constructor(private _http: HttpClient) {}
 
     public spotifyLogin(
         body: URLSearchParams,

@@ -1,1 +1,12 @@
-<h1>Home works!</h1>
+<div *ngIf="isLogin">
+    <div *ngIf="userInfo" class="user-cont mb-3">
+        <div class="profile-img">
+            <a [href]="userInfo.external_urls.spotify" target="_blank">
+                <img [src]="userInfo.images[0].url" alt="">
+            </a>
+        </div>
+        <h2 class="text-center mt-3">{{userInfo.display_name}}</h2>
+    </div>
+    <app-latest-tracks [tracks]="userTracks"></app-latest-tracks>
+    <app-playlists-grid [playlists]="userPlaylists"></app-playlists-grid>
+</div>

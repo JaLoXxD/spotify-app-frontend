@@ -1,0 +1,25 @@
+.profile-img {
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+}
+
+.profile-img img {
+    object-fit: cover;
+}
+
+.profile-img,
+.profile-img img {
+    width: 250px;
+    height: 250px;
+}
+
+.user-cont {
+    display: flex;
+    font-weight: bold;
+    gap: 30px;
+}
+
+h2 {
+    font-size: 60px;
+}

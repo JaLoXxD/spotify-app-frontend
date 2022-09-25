@@ -7,11 +7,19 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/app-navbar.component';
 import { HomeComponent } from './views/home/app.home.component';
+import { LatestTracksComponent } from './components/latest-tracks/latest-tracks.component';
+import { PlaylistsGridComponent } from './components/playlists/grid/playlists-grid.component';
 
 @NgModule({
-  declarations: [AppComponent, NavbarComponent, HomeComponent],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule],
-  providers: [],
-  bootstrap: [AppComponent],
+    declarations: [
+        AppComponent,
+        NavbarComponent,
+        HomeComponent,
+        LatestTracksComponent,
+        PlaylistsGridComponent,
+    ],
+    imports: [BrowserModule, AppRoutingModule, HttpClientModule],
+    providers: [],
+    bootstrap: [AppComponent],
 })
 export class AppModule {}

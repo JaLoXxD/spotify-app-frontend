@@ -29,7 +29,7 @@
                 </li>
             </ul>
             <form class="d-flex">
-                <a *ngIf="!isLogin" class="btn btn-outline-success" href="http://localhost:8082/api/v1/login">Login</a>
+                <a *ngIf="!isLogin" class="btn btn-outline-success" (click)="spotifyRedirect()">Login</a>
                 <a *ngIf="isLogin" class="btn btn-outline-success" (click)="spotifyLogout()">Logout</a>
             </form>
         </div>

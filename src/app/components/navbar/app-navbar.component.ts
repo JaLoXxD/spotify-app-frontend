@@ -12,8 +12,6 @@ export class NavbarComponent implements OnInit {
     private _code: string = '';
     private _redirectUri: string = 'http://localhost:4200';
 
-    public isLogin: boolean = false;
-
     constructor(
         private _authService: AuthService,
         private _route: ActivatedRoute,
@@ -22,7 +20,7 @@ export class NavbarComponent implements OnInit {
 
     ngOnInit(): void {
         if (localStorage.getItem('token')) {
-            this.isLogin = true;
+            this._authService.isLogin = true;
             return;
         }
         this._route.queryParams.subscribe((params) => {
@@ -33,7 +31,14 @@ export class NavbarComponent implements OnInit {
         });
     }
 
-    spotifyLogin() {
+    public spotifyRedirect() {
+        const scope =
+            'user-read-private user-read-email playlist-read-private user-library-modify user-top-read user-read-playback-state user-modify-playback-state user-read-currently-playing streaming user-read-recently-played user-library-read';
+
+        window.location.href = `https://accounts.spotify.com/authorize?response_type=code&client_id=${environment.spotifyClientId}&scope=${scope}&redirect_uri=${this._redirectUri}&state=qweasdrftgcvdfes`;
+    }
+
+    public spotifyLogin() {
         const body = new URLSearchParams();
         body.append('grant_type', 'authorization_code');
         body.append('code', this._code);
@@ -56,12 +61,16 @@ export class NavbarComponent implements OnInit {
                 'token',
                 `${res.token_type} ${res.access_token}`
             );
-            this.isLogin = true;
+            this._authService.isLogin = true;
         });
     }
 
-    spotifyLogout() {
+    public spotifyLogout() {
         localStorage.removeItem('token');
-        this.isLogin = false;
+        this._authService.isLogin = false;
+    }
+
+    public get isLogin(): boolean {
+        return this._authService.isLogin;
     }
 }

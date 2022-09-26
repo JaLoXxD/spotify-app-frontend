@@ -1,0 +1,47 @@
+.followed-artists-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+.followed-artists-container .followed-artist {
+    position: relative;
+}
+
+.followed-artists-container .followed-artist .img-cont {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.followed-artists-container .followed-artist img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+}
+
+.followed-artists-container .followed-artist .img-cont .info-cont {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 50%;
+    cursor: pointer;
+    transform: scale(0);
+    transition: all 0.5s ease-in-out;
+}
+
+.followed-artists-container .followed-artist .img-cont:hover .info-cont {
+    transform: scale(1);
+}
+
+.followed-artists-container .followed-artist .img-cont .info-cont i {
+    color: #d8d8d8;
+    font-size: 40px;
+}

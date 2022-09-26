@@ -12,6 +12,7 @@ export class UserService {
     private _spotifyApiUrl = environment.spotifyApiUrl;
 
     public userInfo!: UserProfileResponseModel;
+    public userToken: string | null = null;
 
     constructor(private _http: HttpClient) {}
 
@@ -29,6 +30,13 @@ export class UserService {
     ): Observable<UserPlaylistsResponseModel> {
         return this._http.get<UserPlaylistsResponseModel>(
             `${this._spotifyApiUrl}/me/playlists`,
+            options
+        );
+    }
+
+    public getUserFollowedArtists(options: Object): Observable<any> {
+        return this._http.get<any>(
+            `${this._spotifyApiUrl}/me/following`,
             options
         );
     }

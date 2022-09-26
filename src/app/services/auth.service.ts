@@ -22,8 +22,4 @@ export class AuthService {
             options
         );
     }
-
-    public test(): Observable<Object> {
-        return this._http.get(`${this._apiUrl}/api/v1/test`);
-    }
 }

@@ -2,22 +2,87 @@
     position: fixed;
     bottom: 0;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     background-color: #000;
     width: 100%;
-    padding: 20px 10px;
+    padding: 20px 30px;
 }
 
-.player-container .controls button {
+.single-btn {
     background-color: transparent;
 }
 
-.player-container .controls button:hover i {
+.single-btn i {
+    color: #d8d8d8;
+    font-size: 20px;
+    margin: 0 10px;
+    transition: all 0.3s ease-in-out;
+}
+
+.single-btn:hover i {
     color: #747171;
 }
 
-.player-container .controls button i {
-    color: #d8d8d8;
-    font-size:20px;
-    margin: 0 10px;
+.player-container .right-controls {
+    display: flex;
+}
+
+.player-container .right-controls .devices {
+    position: relative;
+}
+
+.player-container .right-controls .devices .devices-container {
+    position: absolute;
+    width: 200px;
+    height: fit-content;
+    background-color: #4c4747;
+    padding: 15px;
+    bottom: 30px;
+    right: 0;
+    border-radius: 8px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.player-container .right-controls .devices .devices-container ul {
+    padding: 0;
+    list-style-type: none;
+    color: #f8f8f8;
+    margin: 0;
+}
+
+.player-container .right-controls .devices .devices-container ul li {
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.player-container .right-controls .devices .devices-container ul li:hover {
+    background-color: #2a2a2a;
+}
+
+.player-container .right-controls .devices .devices-container ul li i {
+    margin-right: 10px;
+}
+
+.player-container .right-controls .devices.active .devices-container {
+    opacity: 1;
+    pointer-events: all;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    cursor: ew-resize;
+    box-shadow: 0 0 2px 0 #555;
+    transition: background 0.3s ease-in-out;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    -webkit-appearance: none;
+    box-shadow: none;
+    border: none;
+    background: transparent;
 }

@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { UserProfileResponseModel } from '../models/user-profile-response.model';
 import { UserPlaylistsResponseModel } from '../models/user-playlists-response.model';
+import { UserFollowedArtistsResponse } from '../models/user-followed-artists-response.model';
 
 @Injectable({
     providedIn: 'root',
@@ -11,6 +12,7 @@ import { UserPlaylistsResponseModel } from '../models/user-playlists-response.mo
 export class UserService {
     private _spotifyApiUrl = environment.spotifyApiUrl;
 
+    public userTokenS = new Subject<string | null>();
     public userInfo!: UserProfileResponseModel;
     public userToken: string | null = null;
 
@@ -26,17 +28,20 @@ export class UserService {
     }
 
     public getUserPlaylists(
-        options: Object
+        options: Object,
+        limit: number
     ): Observable<UserPlaylistsResponseModel> {
         return this._http.get<UserPlaylistsResponseModel>(
-            `${this._spotifyApiUrl}/me/playlists`,
+            `${this._spotifyApiUrl}/me/playlists?limit=${limit}`,
             options
         );
     }
 
-    public getUserFollowedArtists(options: Object): Observable<any> {
-        return this._http.get<any>(
-            `${this._spotifyApiUrl}/me/following`,
+    public getUserFollowedArtists(
+        options: Object
+    ): Observable<UserFollowedArtistsResponse> {
+        return this._http.get<UserFollowedArtistsResponse>(
+            `${this._spotifyApiUrl}/me/following?type=artist`,
             options
         );
     }

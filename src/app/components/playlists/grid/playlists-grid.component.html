@@ -1,6 +1,10 @@
 <div *ngIf="playlists" class="playlists-grid">
     <div *ngFor="let playlist of playlists" class="playlist-card">
-        <img [src]="playlist.images[0] ? playlist.images[0].url : placeholderPlaylistImg" alt="">
+        <div class="img-cont">
+            <img [src]="playlist.images[0] ? playlist.images[0].url : placeholderPlaylistImg" alt="">
+            <div class="play"><i class="fa-solid fa-play"></i></div>
+        </div>
         <h5 class="mt-3">{{playlist.name}}</h5>
+        <span>De {{playlist.owner.display_name}}</span>
     </div>
 </div>

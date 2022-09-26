@@ -5,8 +5,10 @@
                 <img [src]="userInfo.images[0].url" alt="">
             </a>
         </div>
-        <h2 class="text-center mt-3">{{userInfo.display_name}}</h2>
+        <h1 class="text-center mt-3">{{userInfo.display_name}}</h1>
     </div>
+    <h2 class="mb-2">Tus me gusta</h2>
     <app-latest-tracks [tracks]="userTracks"></app-latest-tracks>
+    <h2 class="my-4">Tus playlists</h2>
     <app-playlists-grid [playlists]="userPlaylists"></app-playlists-grid>
 </div>

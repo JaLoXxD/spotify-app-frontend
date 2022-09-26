@@ -13,7 +13,6 @@ import { playlistItem } from '../../models/user-playlists-response.model';
     styleUrls: ['./app.home.component.css'],
 })
 export class HomeComponent implements OnInit {
-    public userToken: string | null = null;
     public userTracks!: Array<UserTracksResponseModel>;
     public userPlaylists!: playlistItem[];
 
@@ -25,10 +24,10 @@ export class HomeComponent implements OnInit {
 
     async ngOnInit() {
         if (localStorage.getItem('token')) {
-            this.userToken = localStorage.getItem('token') || null;
+            this._userService.userToken = localStorage.getItem('token') || null;
 
             const headers = new HttpHeaders({
-                Authorization: this.userToken || '',
+                Authorization: this._userService.userToken || '',
                 'Content-Type': 'application/json',
             });
 

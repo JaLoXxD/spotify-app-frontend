@@ -10,6 +10,15 @@ p {
     justify-content: space-between;
 }
 
+.tracks-container table {
+    color: #fff;
+}
+
+.tracks-container table tbody tr td a {
+    color: #fff;
+    color: #dbdbdb;
+}
+
 .tracks-container .track-card {
     display: flex;
     gap: 20px;
@@ -39,4 +48,19 @@ p {
 
 .tracks-container .track-card a:hover {
     text-decoration: underline;
+}
+
+.single-btn {
+    background-color: transparent;
+    border: 0;
+}
+
+.single-btn i {
+    color: #c8c8c8;
+    font-size: 20px;
+    transition: 0.3s all ease-in-out;
+}
+
+.single-btn:hover i {
+    color: #fff;
 }

@@ -15,9 +15,9 @@ import { playlistItem } from '../../models/user-playlists-response.model';
 export class HomeComponent implements OnInit {
     public userTracks!: Array<UserTracksResponseModel>;
     public userPlaylists!: playlistItem[];
+    public totalFollowerArtists: number = 0;
 
     constructor(
-        private _trackService: TrackService,
         private _userService: UserService,
         private _authService: AuthService
     ) {}
@@ -25,7 +25,7 @@ export class HomeComponent implements OnInit {
     async ngOnInit() {
         if (localStorage.getItem('token')) {
             this._userService.userToken = localStorage.getItem('token') || null;
-
+            this._userService.userTokenS.next(localStorage.getItem('token'));
             const headers = new HttpHeaders({
                 Authorization: this._userService.userToken || '',
                 'Content-Type': 'application/json',
@@ -34,10 +34,6 @@ export class HomeComponent implements OnInit {
             const options = { headers };
 
             this.getUserProfile(options);
-
-            this.getLatestTracks(options, 5);
-
-            this.getUserPlaylists(options);
         }
     }
 
@@ -49,19 +45,8 @@ export class HomeComponent implements OnInit {
         });
     }
 
-    public getLatestTracks(options: Object, limit: number) {
-        this._trackService.getUserTracks(options, limit).subscribe((resp) => {
-            console.log(resp);
-            this.userTracks = resp.items;
-        });
-    }
-
-    public getUserPlaylists(options: Object) {
-        this._userService.getUserPlaylists(options).subscribe((resp) => {
-            console.log('playlists');
-            console.log(resp);
-            this.userPlaylists = resp.items;
-        });
+    public getTotalFollowedArtists(total:number) {
+        this.totalFollowerArtists = total;
     }
 
     public get isLogin(): boolean {

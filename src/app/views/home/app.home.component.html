@@ -8,7 +8,9 @@
         <h1 class="text-center mt-3">{{userInfo.display_name}}</h1>
     </div>
     <h2 class="mb-2">Tus me gusta</h2>
-    <app-latest-tracks [tracks]="userTracks"></app-latest-tracks>
+    <app-latest-tracks></app-latest-tracks>
     <h2 class="my-4">Tus playlists</h2>
-    <app-playlists-grid [playlists]="userPlaylists"></app-playlists-grid>
+    <app-playlists-grid></app-playlists-grid>
+    <h2 class="my-4">Artistas a los que sigues</h2>
+    <app-followed-artists (totalFollowedArtists)="getTotalFollowedArtists($event)"></app-followed-artists>
 </div>

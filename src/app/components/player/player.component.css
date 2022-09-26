@@ -1,0 +1,23 @@
+.player-container {
+    position: fixed;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    background-color: #000;
+    width: 100%;
+    padding: 20px 10px;
+}
+
+.player-container .controls button {
+    background-color: transparent;
+}
+
+.player-container .controls button:hover i {
+    color: #747171;
+}
+
+.player-container .controls button i {
+    color: #d8d8d8;
+    font-size:20px;
+    margin: 0 10px;
+}

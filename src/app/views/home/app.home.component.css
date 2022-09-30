@@ -20,6 +20,17 @@
     gap: 30px;
 }
 
+.user-cont .user-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.user-cont .user-details .follows{
+    display: flex;
+    gap:30px;
+}
+
 h1 {
-    font-size: 60px;    
+    font-size: 60px;
 }

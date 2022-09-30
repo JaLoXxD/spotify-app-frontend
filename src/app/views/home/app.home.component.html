@@ -5,7 +5,18 @@
                 <img [src]="userInfo.images[0].url" alt="">
             </a>
         </div>
-        <h1 class="text-center mt-3">{{userInfo.display_name}}</h1>
+        <div class="user-details">
+            <h1 class="text-center">{{userInfo.display_name}}</h1>
+            <div class="follows">
+                <app-info-label ngClass="mt-3" *ngIf="totalFollowerArtists > 0">
+                    Follows: {{totalFollowerArtists}}
+                </app-info-label>
+                <app-info-label ngClass="mt-3" *ngIf="userInfo.followers.total > 0">
+                    Followers: {{userInfo.followers.total}}
+                </app-info-label>
+
+            </div>
+        </div>
     </div>
     <h2 class="mb-2">Tus me gusta</h2>
     <app-latest-tracks></app-latest-tracks>

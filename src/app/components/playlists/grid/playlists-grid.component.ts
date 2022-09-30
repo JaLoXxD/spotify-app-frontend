@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { playlistItem } from '../../../models/user-playlists-response.model';
 import { UserService } from '../../../services/user.service';
 import { HttpHeaders } from '@angular/common/http';
+import { Router } from '@angular/router';
 @Component({
     selector: 'app-playlists-grid',
     templateUrl: './playlists-grid.component.html',
@@ -13,7 +14,7 @@ export class PlaylistsGridComponent implements OnInit {
     public placeholderPlaylistImg: string =
         'https://via.placeholder.com/450x350';
 
-    constructor(private _userService: UserService) {}
+    constructor(private _userService: UserService, private _router: Router) {}
 
     ngOnInit(): void {
         if (localStorage.getItem('token')) {
@@ -33,5 +34,9 @@ export class PlaylistsGridComponent implements OnInit {
             console.log(resp);
             this.playlists = resp.items;
         });
+    }
+
+    public playlistInfo(id: string) {
+        this._router.navigate(['/playlist', id]);
     }
 }

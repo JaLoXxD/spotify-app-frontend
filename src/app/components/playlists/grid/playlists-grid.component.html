@@ -1,5 +1,5 @@
 <div *ngIf="playlists" class="playlists-grid">
-    <div *ngFor="let playlist of playlists" class="playlist-card">
+    <div *ngFor="let playlist of playlists" class="playlist-card" (click)="playlistInfo(playlist.id)">
         <div class="img-cont">
             <img [src]="playlist.images[0] ? playlist.images[0].url : placeholderPlaylistImg" alt="">
             <div class="play"><i class="fa-solid fa-play"></i></div>

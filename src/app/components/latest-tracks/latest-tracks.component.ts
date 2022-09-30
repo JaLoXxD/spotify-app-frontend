@@ -1,8 +1,8 @@
-import { UserTracksResponseModel } from '../../models/user-tracks-response.model';
 import { Component, OnInit } from '@angular/core';
 import { HttpHeaders } from '@angular/common/http';
 import { TrackService } from '../../services/track.service';
 import { UserService } from '../../services/user.service';
+import { TrackItem } from '../../models/tracks-response.model';
 
 @Component({
     selector: 'app-latest-tracks',
@@ -10,7 +10,7 @@ import { UserService } from '../../services/user.service';
     styleUrls: ['./latest-tracks.component.css'],
 })
 export class LatestTracksComponent implements OnInit {
-    public tracks!: Array<UserTracksResponseModel>;
+    public tracks!: Array<TrackItem>;
 
     constructor(
         private _trackService: TrackService,

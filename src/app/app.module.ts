@@ -12,6 +12,9 @@ import { PlaylistsGridComponent } from './components/playlists/grid/playlists-gr
 import { PlayerComponent } from './components/player/player.component';
 import { dropdownDirective } from './shared/dropdown.directive';
 import { FollowedArtists } from './components/followed-artists/followed-artists.component';
+import { PlaylistComponent } from './views/playlist/playlist.component';
+import { InfoLabelComponent } from './shared/components/info-label/info-label.component';
+import { TracksListComponent } from './shared/components/tracks-list/tracks-list.component';
 
 @NgModule({
     declarations: [
@@ -21,8 +24,11 @@ import { FollowedArtists } from './components/followed-artists/followed-artists.
         LatestTracksComponent,
         PlaylistsGridComponent,
         PlayerComponent,
-        dropdownDirective,
         FollowedArtists,
+        PlaylistComponent,
+        dropdownDirective,
+        InfoLabelComponent,
+        TracksListComponent
     ],
     imports: [BrowserModule, AppRoutingModule, HttpClientModule],
     providers: [],

@@ -1,0 +1,16 @@
+<div class="playlist-container" *ngIf="playlistInfo">
+    <img [src]="playlistInfo.images[0].url" alt="">
+    <div class="title mt-4">
+        <a [href]="playlistInfo.external_urls.spotify" target="_blank">
+            <h1 class="text-center">{{playlistInfo.name}}</h1>
+        </a>
+    </div>
+    <p class="text-center mb-4">Por {{playlistInfo.owner.display_name}}</p>
+    <div class="playlist-labels mb-4">
+        <app-info-label [centered]="true">{{playlistInfo.followers.total}} <i class="fa-solid fa-heart"></i>
+        </app-info-label>
+        <app-info-label [centered]="true">{{playlistInfo.tracks.total}} <i class="fa-solid fa-music"></i>
+        </app-info-label>
+    </div>
+    <app-tracks-list [tracks]="tracks" [pages]="pages" (changePage)="onChangePage($event)"></app-tracks-list>
+</div>

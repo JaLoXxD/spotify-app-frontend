@@ -1,0 +1,12 @@
+.detail-card {
+    color: #fff;
+    background-color: #1ed760;
+    width: fit-content;
+    padding: 5px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.detail-card.centered  {
+    margin: 0 auto;
+}

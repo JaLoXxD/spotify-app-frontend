@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ElementRef } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnInit,
+    Output,
+    ViewChild,
+    ElementRef,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TrackItem } from '../../../models/tracks-response.model';
 
@@ -8,8 +16,8 @@ import { TrackItem } from '../../../models/tracks-response.model';
     styleUrls: ['./tracks-list.component.css'],
 })
 export class TracksListComponent implements OnInit {
-    @ViewChild('tracksTable',{static:false}) tracksTable!:ElementRef; 
-    
+    @ViewChild('tracksTable', { static: false }) tracksTable!: ElementRef;
+
     @Input() tracks!: Array<TrackItem>;
     @Input() pages: number = 1;
 
@@ -18,7 +26,7 @@ export class TracksListComponent implements OnInit {
     public currentPage: number = 0;
     public pagesItems: Array<number> = [];
 
-    constructor(private _router:Router, private _route: ActivatedRoute) {}
+    constructor(private _router: Router, private _route: ActivatedRoute) {}
 
     ngOnInit(): void {
         for (let i = 0; i < this.pages; i++) {
@@ -47,8 +55,14 @@ export class TracksListComponent implements OnInit {
             currentPages[currentPages.length - 1] != this.currentPage + 1
         ) {
             return this.pagesItems.slice(start, end);
-        } else if(currentPages[currentPages.length -1] === this.currentPage + 1){
-            return this.pagesItems.slice(this.currentPage - 4, this.currentPage + 1);
+        } else if (
+            currentPages[currentPages.length - 1] ===
+            this.currentPage + 1
+        ) {
+            return this.pagesItems.slice(
+                this.currentPage - 4,
+                this.currentPage + 1
+            );
         } else {
             return this.pagesItems.slice(
                 this.currentPage,
@@ -57,8 +71,12 @@ export class TracksListComponent implements OnInit {
         }
     }
 
-    onChangePage(pageNumber: number) {
+    public onChangePage(pageNumber: number) {
         this.changePage.emit(pageNumber);
         this.currentPage = pageNumber - 1;
+    }
+
+    public playAudio() {
+        
     }
 }

@@ -4,7 +4,6 @@
 
 export const environment = {
     production: false,
-    apiUrl: 'http://localhost:8082',
     spotifyAccountApiUrl: 'https://accounts.spotify.com',
     spotifyApiUrl: 'https://api.spotify.com/v1',
     spotifyClientId: '28d5d43038ed4db6a7360cb3aefa3b21',

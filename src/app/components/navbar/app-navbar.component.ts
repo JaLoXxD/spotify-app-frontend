@@ -10,7 +10,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class NavbarComponent implements OnInit {
     private _code: string = '';
-    private _redirectUri: string = 'http://localhost:4200';
+    private _redirectUri: string = environment.redirectUri;
 
     constructor(
         private _authService: AuthService,

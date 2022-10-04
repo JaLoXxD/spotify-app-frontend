@@ -10,7 +10,6 @@ import { Router } from '@angular/router';
 })
 export class PlaylistsGridComponent implements OnInit {
     public playlists: playlistItem[] = [];
-
     public placeholderPlaylistImg: string =
         'https://via.placeholder.com/450x350';
 

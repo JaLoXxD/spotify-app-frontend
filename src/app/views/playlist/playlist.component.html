@@ -1,4 +1,5 @@
-<div class="playlist-container" *ngIf="playlistInfo">
+<app-spinner *ngIf="isLoading"></app-spinner>
+<div class="playlist-container" *ngIf="!isLoading">
     <img [src]="playlistInfo.images[0].url" alt="">
     <div class="title mt-4">
         <a [href]="playlistInfo.external_urls.spotify" target="_blank">

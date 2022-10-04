@@ -12,6 +12,7 @@ import { TrackItem } from '../../models/tracks-response.model';
     styleUrls: ['./playlist.component.css'],
 })
 export class PlaylistComponent implements OnInit {
+    public isLoading: boolean = true;
     public playlistInfo!: PlaylistInfoResponse;
     public tracks!: TrackItem[];
     public pages: number = 0;
@@ -29,45 +30,23 @@ export class PlaylistComponent implements OnInit {
         if (!localStorage.getItem('token')) {
             return;
         }
-        console.log(this._userService);
-        this._route.params.subscribe((params) => {
-            console.log(params);
+        this._route.params.subscribe(async (params) => {
             const options = this.createOptions();
             this._playlistId = params['id'];
-            this.getPlaylist(this._playlistId, options);
-            this.getPlaylistItems(
+            this.playlistInfo = await this._playlistService.getPlaylist(
+                this._playlistId,
+                options
+            );
+            const tracksRes = await this._playlistService.getPlaylistTracks(
                 this._playlistId,
                 '10',
                 this._offset.toString(),
                 options
             );
+            this.tracks = tracksRes.items;
+            this.pages = Math.ceil(tracksRes.total / 10);
+            this.isLoading = false;
         });
-    }
-
-    public getPlaylist(id: string, options: Object) {
-        this._playlistService.getPlaylist(id, options).subscribe((resp) => {
-            this.playlistInfo = resp;
-            console.log(this.playlistInfo);
-        });
-    }
-
-    public getPlaylistItems(
-        id: string,
-        limit: string,
-        offset: string,
-        options: Object
-    ) {
-        this._playlistService
-            .getPlaylistTracks(id, limit, offset, options)
-            .subscribe((resp) => {
-                this.tracks = resp.items;
-                this.pages = Math.ceil(resp.total / 10);
-                window.scroll({
-                    top: 0,
-                    left: 0,
-                    behavior: 'smooth',
-                });
-            });
     }
 
     public createOptions(): Object {
@@ -86,14 +65,15 @@ export class PlaylistComponent implements OnInit {
 
     getUserById(userId: string) {}
 
-    onChangePage(pageNumber: number) {
+    async onChangePage(pageNumber: number) {
         this._offset = (pageNumber - 1) * 10;
         const options = this.createOptions();
-        this.getPlaylistItems(
+        const tracksRes = await this._playlistService.getPlaylistTracks(
             this._playlistId,
             '10',
             this._offset.toString(),
             options
         );
+        this.tracks = tracksRes.items;
     }
 }

@@ -1,8 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { PlayerService } from './services/player.service';
-import { HttpHeaders } from '@angular/common/http';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { UserService } from './services/user.service';
-import { AuthService } from './services/auth.service';
 
 @Component({
     selector: 'app-root',
@@ -12,13 +9,13 @@ import { AuthService } from './services/auth.service';
 export class AppComponent implements OnInit {
     title = 'Spotify';
 
-    constructor(
-        private _playerService: PlayerService,
-        private _userService: UserService,
-        private _authService: AuthService
-    ) {}
+    constructor(private _userService: UserService) {}
 
-    ngOnInit(): void {
+    ngOnInit() {
         console.log(this._userService);
+        const script = document.createElement("script");
+        script.src = "https://sdk.scdn.co/spotify-player.js";
+        script.async = false;
+        
     }
 }

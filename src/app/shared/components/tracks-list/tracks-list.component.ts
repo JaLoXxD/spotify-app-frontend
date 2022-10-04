@@ -74,6 +74,11 @@ export class TracksListComponent implements OnInit {
     public onChangePage(pageNumber: number) {
         this.changePage.emit(pageNumber);
         this.currentPage = pageNumber - 1;
+        window.scroll({
+            top: 0,
+            left: 0,
+            behavior: 'smooth',
+        });
     }
 
     public playAudio() {

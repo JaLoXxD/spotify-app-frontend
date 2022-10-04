@@ -5,3 +5,20 @@ body{
 h1,h2,h3,h4,h5,p,span{
     color:#fff;
 }
+
+.green-btn{
+    width: fit-content;
+    padding: 8px 15px;
+    border:2px solid #848d87;
+    background-color: transparent;
+    color:#fff;
+    font-size:18px;
+    border-radius:5px;
+    transition:all .3s ease-in-out;
+}
+
+.green-btn:hover{
+    background-color:#1ED760;
+    border:2px solid #1ED760;
+    transform: scale(1.1);
+}

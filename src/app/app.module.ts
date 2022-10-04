@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 /* COMPONENTS */
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/app-navbar.component';
@@ -15,6 +15,10 @@ import { FollowedArtists } from './components/followed-artists/followed-artists.
 import { PlaylistComponent } from './views/playlist/playlist.component';
 import { InfoLabelComponent } from './shared/components/info-label/info-label.component';
 import { TracksListComponent } from './shared/components/tracks-list/tracks-list.component';
+import { LoginComponent } from './views/login/login.component';
+/* INTERCEPTORS */
+import { AuthInterceptorService } from './services/auth-interceptor.service';
+import { SpinnerComponent } from './shared/components/spinner/spinner.component';
 
 @NgModule({
     declarations: [
@@ -28,10 +32,18 @@ import { TracksListComponent } from './shared/components/tracks-list/tracks-list
         PlaylistComponent,
         dropdownDirective,
         InfoLabelComponent,
-        TracksListComponent
+        TracksListComponent,
+        LoginComponent,
+        SpinnerComponent,
     ],
     imports: [BrowserModule, AppRoutingModule, HttpClientModule],
-    providers: [],
+    providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptorService,
+            multi: true,
+        },
+    ],
     bootstrap: [AppComponent],
 })
 export class AppModule {}

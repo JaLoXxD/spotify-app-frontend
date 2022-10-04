@@ -15,17 +15,44 @@ export class PlaylistService {
     getPlaylist(
         playlistId: string,
         options: Object
-    ): Observable<PlaylistInfoResponse> {
-        return this._http.get<PlaylistInfoResponse>(
-            `${this._spotifyApiUrl}/playlists/${playlistId}`,
-            options
-        );
+    ): Promise<PlaylistInfoResponse> {
+        return new Promise((resolve, reject) => {
+            this._http
+                .get<PlaylistInfoResponse>(
+                    `${this._spotifyApiUrl}/playlists/${playlistId}`,
+                    options
+                )
+                .subscribe({
+                    next: (res) => {
+                        resolve(res);
+                    },
+                    error: (err) => {
+                        reject(err);
+                    },
+                });
+        });
     }
 
-    getPlaylistTracks(playlistId: string, limit: string, offset: string, options: Object): Observable<any> {
-        return this._http.get<any>(
-            `${this._spotifyApiUrl}/playlists/${playlistId}/tracks?limit=${limit}&offset=${offset}`,
-            options
-        );
+    getPlaylistTracks(
+        playlistId: string,
+        limit: string,
+        offset: string,
+        options: Object
+    ): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this._http
+                .get<any>(
+                    `${this._spotifyApiUrl}/playlists/${playlistId}/tracks?limit=${limit}&offset=${offset}`,
+                    options
+                )
+                .subscribe({
+                    next: (res) => {
+                        resolve(res);
+                    },
+                    error: (err) => {
+                        reject(err);
+                    },
+                });
+        });
     }
 }

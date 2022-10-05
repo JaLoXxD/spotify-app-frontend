@@ -7,6 +7,7 @@ import { UserTracksResponseModel } from '../../models/user-tracks-response.model
 import { playlistItem } from '../../models/user-playlists-response.model';
 import { environment } from 'src/environments/environment';
 import { ActivatedRoute, Router } from '@angular/router';
+import { PlayerService } from '../../services/player.service';
 
 @Component({
     selector: 'app-home-component',
@@ -24,8 +25,9 @@ export class HomeComponent implements OnInit {
     constructor(
         private _userService: UserService,
         private _authService: AuthService,
+        private _player: PlayerService,
         private _route: ActivatedRoute,
-        private _router: Router,
+        private _router: Router
     ) {}
 
     ngOnInit() {
@@ -73,12 +75,11 @@ export class HomeComponent implements OnInit {
             this._authService.spotifyLogin(body, options).subscribe({
                 next: (res: any) => {
                     console.log(res);
-                    localStorage.setItem(
-                        'token',
-                        `${res.token_type} ${res.access_token}`
-                    );
+                    const token = `${res.token_type} ${res.access_token}`;
+                    localStorage.setItem('token', token);
                     this._authService.isLogin = true;
                     this._authService.setTokenExpirationDate(res.expires_in);
+                    // this._startSpotifyPlayer(res.access_token);
                     resolve(true);
                 },
                 error: (err) => {

@@ -1,21 +1,27 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
-import { UserService } from './services/user.service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { PlayerService } from './services/player.service';
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
     title = 'Spotify';
 
-    constructor(private _userService: UserService) {}
+    constructor(private _playerService: PlayerService) {}
 
     ngOnInit() {
-        console.log(this._userService);
-        const script = document.createElement("script");
-        script.src = "https://sdk.scdn.co/spotify-player.js";
-        script.async = false;
-        
+        const token = localStorage.getItem('token');
+        if(token){
+            this._playerService.startSpotifyPlayer(token.replace('Bearer ',''))
+        }
+        // this._playerService.startPlayerListeners();
+    }
+
+    ngOnDestroy(): void {
+        if(this._playerService.player){
+            this._playerService.destroySpotifyPlayer();
+        }
     }
 }

@@ -1,10 +1,14 @@
 <div class="player-container">
-    <div class="song"></div>
+    <div class="song">
+        <span>{{name}}</span>
+    </div>
     <div class="controls">
         <button class="single-btn"><i class="fa-solid fa-shuffle"></i></button>
         <button class="single-btn"><i class="fa-solid fa-backward"></i></button>
-        <button class="single-btn" *ngIf="!playbackState?.is_playing" (click)="tooglePlayer('play')"><i class="fa-solid fa-circle-play"></i></button>
-        <button class="single-btn" *ngIf="playbackState?.is_playing"><i class="fa-solid fa-circle-pause"></i></button>
+        <button class="single-btn" *ngIf="!isPlaying" (click)="tooglePlayer()"><i
+                class="fa-solid fa-circle-play"></i></button>
+        <button class="single-btn" *ngIf="isPlaying" (click)="tooglePlayer()"><i
+                class="fa-solid fa-circle-pause"></i></button>
         <button class="single-btn"><i class="fa-solid fa-forward"></i></button>
         <button class="single-btn"><i class="fa-solid fa-repeat"></i></button>
     </div>
@@ -13,7 +17,8 @@
             <div class="devices-container">
                 <h5>Your devices</h5>
                 <ul>
-                    <li class="device-item" *ngFor="let device of availableDevices">
+                    <li class="device-item" *ngFor="let device of availableDevices"
+                        [ngClass]="{'active-device': device.id === currentDevice}" (click)="chooseDevice(device)">
                         <i class="fa-solid fa-desktop"></i>{{device.name}}
                     </li>
                 </ul>

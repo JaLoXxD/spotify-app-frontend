@@ -70,6 +70,10 @@
     pointer-events: all;
 }
 
+.player-container .right-controls .devices.active .devices-container .active-device {
+    color:#1ED760;
+}
+
 input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     height: 20px;

@@ -32,9 +32,35 @@ p {
     background-color: #2a2a2a;
 }
 
-.tracks-container .track-card img {
+.tracks-container .track-card .img-container img {
     width: 50px;
     margin-top: auto;
+}
+
+.tracks-container .track-card .img-container .play {
+    align-items: center;
+    background-color: #1ed760;
+    border-radius: 50%;
+    bottom: 0;
+    cursor: pointer;
+    display: flex;
+    height: 70%;
+    justify-content: center;
+    left: 0;
+    margin: auto;
+    right: 0;
+    top: 0;
+    transform: scale(0);
+    transition: all 0.5s ease-in-out;
+    width: 70%;
+}
+
+.tracks-container .track-card .img-container:hover .play {
+    transform: scale(1);
+}
+
+.tracks-container .track-card .img-container .play i {
+    color: #000;
 }
 
 .tracks-container .track-card .track-name {

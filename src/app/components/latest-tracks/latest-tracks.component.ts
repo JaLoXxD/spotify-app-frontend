@@ -3,6 +3,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { TrackService } from '../../services/track.service';
 import { UserService } from '../../services/user.service';
 import { TrackItem } from '../../models/tracks-response.model';
+import { PlayerService } from '../../services/player.service';
 
 @Component({
     selector: 'app-latest-tracks',
@@ -14,7 +15,8 @@ export class LatestTracksComponent implements OnInit {
 
     constructor(
         private _trackService: TrackService,
-        private _userService: UserService
+        private _userService: UserService,
+        private _playerService: PlayerService
     ) {}
 
     ngOnInit(): void {
@@ -44,5 +46,34 @@ export class LatestTracksComponent implements OnInit {
 
     public formatDuration(time: number) {
         return time < 10 ? `0${time}` : time;
+    }
+
+    public playSong(uri: string) {
+        if (!this.currentDevice) {
+            return;
+        }
+        const body = {
+            position_ms: 0,
+            uris: [uri],
+        };
+        const headers = new HttpHeaders({
+            Authorization: this._userService.userToken || '',
+            'Content-Type': 'application/json',
+        });
+        const options = { headers };
+        this._playerService
+            .startOrResumePlayer(this.currentDevice, body, options)
+            .subscribe({
+                next: (res) => {
+                    this._playerService.isPlaying = true;
+                },
+                error: (err) => {
+                    console.log(err);
+                },
+            });
+    };
+
+    public get currentDevice(): string | undefined {
+        return this._playerService.currentDevice;
     }
 }

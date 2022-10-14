@@ -4,7 +4,12 @@
             <tr class="track-card" *ngFor="let currentTrack of tracks; let i = index">
                 <td>{{i + 1}}</td>
                 <td class="d-flex gap-3 w-50">
-                    <img [src]="currentTrack.track.album.images[0].url" alt="">
+                    <div class="img-container position-relative">
+                        <img [src]="currentTrack.track.album.images[0].url" alt="" />
+                        <div class="play position-absolute" (click)="playSong(currentTrack.track.uri)">
+                            <i class="fa-solid fa-play"></i>
+                        </div>
+                    </div>
                     <div class="track-info">
                         <p class="track-name">{{currentTrack.track.name}}</p>
                         <p class="track-artists"><span

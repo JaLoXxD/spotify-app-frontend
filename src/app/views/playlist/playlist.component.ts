@@ -5,6 +5,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { UserService } from '../../services/user.service';
 import { PlaylistInfoResponse } from '../../models/playlist-info-response.model';
 import { TrackItem } from '../../models/tracks-response.model';
+import { PlayerService } from '../../services/player.service';
 
 @Component({
     selector: 'app-playlist',
@@ -23,7 +24,8 @@ export class PlaylistComponent implements OnInit {
     constructor(
         private _playlistService: PlaylistService,
         private _route: ActivatedRoute,
-        private _userService: UserService
+        private _userService: UserService,
+        private _playerService: PlayerService,
     ) {}
 
     ngOnInit(): void {
@@ -43,6 +45,10 @@ export class PlaylistComponent implements OnInit {
                 this._offset.toString(),
                 options
             );
+            if(this._playerService.playType === "playback") {
+                // const uris = tracksRes.items
+                // this._playerService.playSongs([]);
+            }
             this.tracks = tracksRes.items;
             this.pages = Math.ceil(tracksRes.total / 10);
             this.isLoading = false;

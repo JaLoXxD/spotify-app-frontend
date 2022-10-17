@@ -45,9 +45,14 @@ export class PlaylistComponent implements OnInit {
                 this._offset.toString(),
                 options
             );
-            if(this._playerService.playType === "playback") {
-                // const uris = tracksRes.items
-                // this._playerService.playSongs([]);
+            console.log(tracksRes);
+            const playbackTracksUris:Array<string> = [];
+            if(this._playerService.playType === "playlist") {
+                tracksRes.items.forEach((item: any) => {
+                    playbackTracksUris.push(item.track.uri);
+                });
+                console.log(playbackTracksUris);
+                this._playerService.playSongs(playbackTracksUris);
             }
             this.tracks = tracksRes.items;
             this.pages = Math.ceil(tracksRes.total / 10);

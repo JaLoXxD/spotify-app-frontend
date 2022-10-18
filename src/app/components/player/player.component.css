@@ -1,30 +1,89 @@
 .player-container {
     position: fixed;
     bottom: 0;
-    display: flex;
-    justify-content: space-between;
     background-color: #000;
     width: 100%;
-    padding: 20px 30px;
+    padding: 10px 30px;
+    height: 80px;
 }
 
 .single-btn {
     background-color: transparent;
 }
 
+.single-btn .repeat-one{
+    top:0;
+    left:10px;
+    color:#fff;
+    background-color: #1ED760;
+    width:15px;
+    height:15px;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: bold;
+}
+
 .single-btn i {
     color: #d8d8d8;
-    font-size: 20px;
+    font-size: 25px;
     margin: 0 10px;
     transition: all 0.3s ease-in-out;
 }
 
 .single-btn:hover i {
-    color: #747171;
+    color: #1ED760;
 }
 
-.player-container .right-controls {
-    display: flex;
+.rigth-btn{
+    width: 70px;
+    height: 40px;
+}
+
+.player-container .song,
+.player-container .right-controls{
+    width:30%;
+}
+
+.player-container .controls{
+    width:40%;
+}
+
+.player-container .song img{
+    width: 40px;
+    height: 40px;
+}
+
+.player-container .song .track-info{
+    margin:8px 15px;
+}
+
+.player-container .song .track-info span{
+    font-size: 12px;
+}
+
+.player-container .song .text{
+    white-space: nowrap;
+    width: calc(100% - 40px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color:#d8d8d8;
+    /* display: inline-block; */
+    /* animation: scrollText 5s linear infinite; */
+    cursor: default;
+}
+
+@keyframes scrollText {
+    0% {
+        transform: translateX(0%);
+    }
+
+    50% {
+        transform: translateX(calc(-100% + 200px));   
+    }
+    
+    100% {
+        transform: translateX(0%);
+    }
 }
 
 .player-container .right-controls .devices {
@@ -70,23 +129,7 @@
     pointer-events: all;
 }
 
-.player-container .right-controls .devices.active .devices-container .active-device {
+.player-container .right-controls .devices.active .devices-container .active-device,
+.repeat-on i, .active-device i {
     color:#1ED760;
-}
-
-input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    height: 20px;
-    width: 20px;
-    border-radius: 50%;
-    cursor: ew-resize;
-    box-shadow: 0 0 2px 0 #555;
-    transition: background 0.3s ease-in-out;
-}
-
-input[type="range"]::-webkit-slider-runnable-track {
-    -webkit-appearance: none;
-    box-shadow: none;
-    border: none;
-    background: transparent;
 }

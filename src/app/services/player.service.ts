@@ -14,14 +14,17 @@ export class PlayerService {
     private _spotifyApiUrl: string = environment.spotifyApiUrl;
     private _position: number = 0;
     private _duration: number = 0;
-    private _currentTrack: BehaviorSubject<PlayerTrackResponse | undefined> = new BehaviorSubject<PlayerTrackResponse | undefined>(undefined);
-    
+    private _currentTrack: BehaviorSubject<PlayerTrackResponse | undefined> =
+        new BehaviorSubject<PlayerTrackResponse | undefined>(undefined);
+
     public searchDevices: BehaviorSubject<boolean> =
         new BehaviorSubject<boolean>(false);
     public player: Spotify.Player | null = null;
-    public currentDevice:string | undefined;
+    public currentDevice: string | undefined;
     public isPlaying: boolean = false;
     public playType: string | undefined;
+    public repeatState: string = 'off';
+    public volume: number = 50;
 
     constructor(private _http: HttpClient, private _userService: UserService) {}
 
@@ -67,6 +70,52 @@ export class PlayerService {
         );
     }
 
+    public nextTrack(
+        deviceId: string | undefined,
+        options: Object
+    ): Observable<any> {
+        return this._http.post(
+            `${this._spotifyApiUrl}/me/player/next?device_id=${deviceId}`,
+            {},
+            options
+        );
+    }
+
+    public previousTrack(
+        deviceId: string | undefined,
+        options: Object
+    ): Observable<any> {
+        return this._http.post(
+            `${this._spotifyApiUrl}/me/player/previous?device_id=${deviceId}`,
+            {},
+            options
+        );
+    }
+
+    public setVolume(
+        deviceId: string | undefined,
+        volume_percent: number,
+        options: Object
+    ): Observable<null> {
+        return this._http.put<null>(
+            `${this._spotifyApiUrl}/me/player/volume?volume_percent=${volume_percent}&device_id=${deviceId}`,
+            {},
+            options
+        );
+    }
+
+    public toogleRepeatMode(
+        deviceId: string | undefined,
+        state: string,
+        options: Object
+    ): Observable<any> {
+        return this._http.put(
+            `${this._spotifyApiUrl}/me/player/repeat?state=${state}&device_id=${deviceId}`,
+            {},
+            options
+        );
+    }
+
     public startSpotifyPlayer(access_token: string) {
         window.onSpotifyWebPlaybackSDKReady = () => {
             console.log('spotify script loaded');
@@ -75,7 +124,7 @@ export class PlayerService {
                 getOAuthToken: (cb) => {
                     cb(access_token);
                 },
-                volume: 0.5,
+                volume: this.volume / 100,
             });
             this.player
                 .connect()
@@ -103,16 +152,15 @@ export class PlayerService {
             'Content-Type': 'application/json',
         });
         const options = { headers };
-        this.startOrResumePlayer(this.currentDevice, body, options)
-            .subscribe({
-                next: (res) => {
-                    this.isPlaying = true;
-                },
-                error: (err) => {
-                    console.log(err);
-                },
-            });
-    };
+        this.startOrResumePlayer(this.currentDevice, body, options).subscribe({
+            next: (res) => {
+                this.isPlaying = true;
+            },
+            error: (err) => {
+                console.log(err);
+            },
+        });
+    }
 
     public destroySpotifyPlayer() {
         this.player?.disconnect();
@@ -127,12 +175,11 @@ export class PlayerService {
             this.player.addListener(
                 'player_state_changed',
                 ({ position, duration, track_window: { current_track } }) => {
-
                     this._currentTrack.next(current_track);
                     console.log('send track name');
                     console.log(`current state:`);
                     this._position = position;
-                    this._duration = duration;                                  
+                    this._duration = duration;
                     console.log('Currently Playing', current_track);
                     console.log('Position in Song', position);
                     console.log('Duration of Song', duration);
@@ -151,9 +198,7 @@ export class PlayerService {
         return this._duration;
     }
 
-    
-    public get currentTrack() : Observable<PlayerTrackResponse | undefined> {
+    public get currentTrack(): Observable<PlayerTrackResponse | undefined> {
         return this._currentTrack.asObservable();
     }
-    
 }

@@ -12,7 +12,7 @@ export class AuthGuard implements CanActivate{
 
     canActivate(route: ActivatedRouteSnapshot): boolean {
         if((!this._authService.isLogin && !localStorage.getItem('token')) && !route.queryParams['code']){
-            this._router.navigate(['login']);
+            this._authService.spotifyLogout();
             return false;
         }
         return true;

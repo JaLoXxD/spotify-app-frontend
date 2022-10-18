@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { PlaybackStateResponse } from '../models/player/playback-state-response.model';
 import { AvailableDevicesResponse } from '../models/player/available-devices-response.model';
 import { PlayerTrackResponse } from '../models/player/player-track-response.model';
@@ -12,8 +12,6 @@ import { UserService } from './user.service';
 })
 export class PlayerService {
     private _spotifyApiUrl: string = environment.spotifyApiUrl;
-    private _position: number = 0;
-    private _duration: number = 0;
     private _currentTrack: BehaviorSubject<PlayerTrackResponse | undefined> =
         new BehaviorSubject<PlayerTrackResponse | undefined>(undefined);
 
@@ -25,6 +23,12 @@ export class PlayerService {
     public playType: string | undefined;
     public repeatState: string = 'off';
     public volume: number = 50;
+    public trackDuration: string = '0:00';
+    public trackPosition: string = '0:00';
+    public position: number = 0;
+    public duration: number = 0;
+    public repeatMode: number = 0;
+    public shuffle: boolean = false;
 
     constructor(private _http: HttpClient, private _userService: UserService) {}
 
@@ -120,7 +124,7 @@ export class PlayerService {
         window.onSpotifyWebPlaybackSDKReady = () => {
             console.log('spotify script loaded');
             this.player = new Spotify.Player({
-                name: 'Jorge player',
+                name: 'custom player',
                 getOAuthToken: (cb) => {
                     cb(access_token);
                 },
@@ -174,15 +178,19 @@ export class PlayerService {
             });
             this.player.addListener(
                 'player_state_changed',
-                ({ position, duration, track_window: { current_track } }) => {
+                ({ repeat_mode, shuffle, position, duration, track_window: { current_track }}) => {
                     this._currentTrack.next(current_track);
                     console.log('send track name');
                     console.log(`current state:`);
-                    this._position = position;
-                    this._duration = duration;
                     console.log('Currently Playing', current_track);
                     console.log('Position in Song', position);
                     console.log('Duration of Song', duration);
+                    this.repeatMode = repeat_mode;
+                    this.shuffle = shuffle;
+                    this.position = position;
+                    this.duration = duration;
+                    this.trackDuration = this.calculateTime(duration);
+                    this.trackPosition = this.calculateTime(position);
                 }
             );
         } else {
@@ -190,12 +198,11 @@ export class PlayerService {
         }
     }
 
-    public get position(): number {
-        return this._position;
-    }
-
-    public get duration(): number {
-        return this._duration;
+    calculateTime(timeInMs: number) {
+        const mins = Math.floor(timeInMs / 60000);
+        const seconds = Math.round((timeInMs / 60000 - mins) * 60);
+        const finalSeconds = seconds < 10 ? `0${seconds}` : seconds;
+        return `${mins}:${finalSeconds}`;
     }
 
     public get currentTrack(): Observable<PlayerTrackResponse | undefined> {

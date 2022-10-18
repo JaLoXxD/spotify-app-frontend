@@ -1,18 +1,35 @@
-<div class="player-container">
-    <div class="song">
-        <span>{{name}}</span>
+<div class="player-container d-flex justify-content-between align-items-center">
+    <div class="song overflow-hidden d-flex align-items-center justify-content-start">
+        <img *ngIf="currentTrack" [src]="currentTrack.album.images[0].url" [alt]="currentTrack.name">
+        <div class="track-info">
+            <div *ngIf="currentTrack" class="text" [title]="currentTrack.name">{{name}}</div>
+            <div *ngIf="currentTrack">
+                <span *ngFor="let artist of currentTrack.artists">{{artist.name}}</span>
+            </div>
+        </div>
     </div>
-    <div class="controls">
-        <button class="single-btn"><i class="fa-solid fa-shuffle"></i></button>
-        <button class="single-btn"><i class="fa-solid fa-backward"></i></button>
-        <button class="single-btn" *ngIf="!isPlaying" (click)="tooglePlayer()"><i
-                class="fa-solid fa-circle-play"></i></button>
-        <button class="single-btn" *ngIf="isPlaying" (click)="tooglePlayer()"><i
-                class="fa-solid fa-circle-pause"></i></button>
-        <button class="single-btn"><i class="fa-solid fa-forward"></i></button>
-        <button class="single-btn"><i class="fa-solid fa-repeat"></i></button>
+    <div class="controls d-flex justify-content-center flex-column align-items-center">
+        <div class="buttons">
+            <button class="single-btn"><i class="fa-solid fa-shuffle"></i></button>
+            <button class="single-btn" (click)="previousTrack()"><i class="fa-solid fa-backward"></i></button>
+            <button class="single-btn" *ngIf="!isPlaying" (click)="tooglePlayer()"><i
+                    class="fa-solid fa-circle-play"></i></button>
+            <button class="single-btn" *ngIf="isPlaying" (click)="tooglePlayer()"><i
+                    class="fa-solid fa-circle-pause"></i></button>
+            <button class="single-btn" (click)="nextTrack()"><i class="fa-solid fa-forward"></i></button>
+            <button class="single-btn position-relative"
+                [ngClass]="{'repeat-on': repeatState != 'off'}" (click)="toogleRepeatMode()">
+                <i class="fa-solid fa-repeat"></i>
+                <span *ngIf="repeatState === 'track'" class="repeat-one position-absolute d-flex justify-content-center align-items-center">1</span>
+            </button>
+        </div>
+        <div class="track-progress w-100 d-flex justify-content-between align-items-center">
+            <span>{{trackPosition}}</span>
+            <progress [max]="100" [value]="trackProgress" class="w-100 mx-3"></progress>
+            <span>{{trackDuration}}</span>
+        </div>
     </div>
-    <div class="right-controls">
+    <div class="right-controls d-flex justify-content-end">
         <div appDropdown class="devices">
             <div class="devices-container">
                 <h5>Your devices</h5>
@@ -23,11 +40,16 @@
                     </li>
                 </ul>
             </div>
-            <button class="single-btn"><i class="fa-solid fa-computer"></i></button>
+            <button class="single-btn rigth-btn" [ngClass]="{'active-device': currentDevice}"><i
+                    class="fa-solid fa-computer"></i></button>
         </div>
         <div class="volume">
-            <button class="single-btn"><i class="fa-solid fa-volume-off"></i></button>
-            <input type="range" min="1" max="100" [value]="volume">
+            <button class="single-btn rigth-btn">
+                <i *ngIf="volume === 0" class="fa-solid fa-volume-off"></i>
+                <i *ngIf="volume != 0 && volume < 50" class="fa-solid fa-volume-low"></i>
+                <i *ngIf="volume >= 50" class="fa-solid fa-volume-high"></i>
+            </button>
+            <input type="range" min="0" max="100" [value]="volume" (input)="getVolume($event)" (change)="setVolume()" />
         </div>
     </div>
 </div>

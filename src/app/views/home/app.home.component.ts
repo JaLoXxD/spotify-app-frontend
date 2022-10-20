@@ -7,7 +7,8 @@ import { UserTracksResponseModel } from '../../models/user-tracks-response.model
 import { playlistItem } from '../../models/user-playlists-response.model';
 import { environment } from 'src/environments/environment';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PlayerService } from '../../services/player.service';
+import { TrackService } from '../../services/track.service';
+import { TrackItem } from '../../models/tracks-response.model';
 
 @Component({
     selector: 'app-home-component',
@@ -18,6 +19,7 @@ export class HomeComponent implements OnInit {
     public userTracks!: Array<UserTracksResponseModel>;
     public userPlaylists!: playlistItem[];
     public totalFollowerArtists: number = 0;
+    public tracks!: Array<TrackItem>;
 
     private _redirectUri: string = environment.redirectUri;
     private _code: string = '';
@@ -25,7 +27,7 @@ export class HomeComponent implements OnInit {
     constructor(
         private _userService: UserService,
         private _authService: AuthService,
-        private _player: PlayerService,
+        private _trackService: TrackService,
         private _route: ActivatedRoute,
         private _router: Router
     ) {}
@@ -40,20 +42,20 @@ export class HomeComponent implements OnInit {
             }
             if (localStorage.getItem('token')) {
                 console.log('start token');
-                this._userService.userToken =
-                    localStorage.getItem('token') || null;
-                console.log(this._userService);
-                this._userService.userTokenS.next(
-                    localStorage.getItem('token')
-                );
+                if(!this._userService.userToken.value){
+                    this._userService.userToken.next(localStorage.getItem('token')!);
+                }
                 const headers = new HttpHeaders({
-                    Authorization: this._userService.userToken || '',
+                    Authorization: localStorage.getItem('token') || '',
                     'Content-Type': 'application/json',
                 });
 
                 const options = { headers };
 
+                console.log(options);
+
                 this.getUserProfile(options);
+                this.getLatestTracks(options, 5);
             }
         });
     }
@@ -79,7 +81,9 @@ export class HomeComponent implements OnInit {
                     localStorage.setItem('token', token);
                     this._authService.isLogin = true;
                     this._authService.setTokenExpirationDate(res.expires_in);
-                    // this._startSpotifyPlayer(res.access_token);
+                    if(!this._userService.userToken.value){
+                        this._userService.userToken.next(token);
+                    }
                     resolve(true);
                 },
                 error: (err) => {
@@ -95,11 +99,20 @@ export class HomeComponent implements OnInit {
             console.log('user profile');
             console.log(res);
             this._userService.userInfo = res;
+            this._userService.isPremium =
+                res.product === 'premium' ? true : false;
         });
     }
 
     public getTotalFollowedArtists(total: number) {
         this.totalFollowerArtists = total;
+    }
+
+    public getLatestTracks(options: Object, limit: number) {
+        this._trackService.getUserTracks(options, limit).subscribe((resp) => {
+            console.log(resp);
+            this.tracks = resp.items;
+        });
     }
 
     public get isLogin(): boolean {
@@ -109,4 +122,10 @@ export class HomeComponent implements OnInit {
     public get userInfo(): UserProfileResponseModel {
         return this._userService.userInfo;
     }
+
+    
+    public get userImage() : string {
+        return this.userInfo.images[0]?.url ? this.userInfo.images[0].url : '../../../assets/images/user-logo.png'
+    }
+    
 }

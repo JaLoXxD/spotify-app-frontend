@@ -2,7 +2,7 @@
     <div *ngIf="userInfo" class="user-cont mb-3">
         <div class="profile-img">
             <a [href]="userInfo.external_urls.spotify" target="_blank">
-                <img [src]="userInfo.images[0].url" alt="">
+                <img [src]="userImage" alt="">
             </a>
         </div>
         <div class="user-details">
@@ -19,7 +19,7 @@
         </div>
     </div>
     <h2 class="mb-2">Tus me gusta</h2>
-    <app-latest-tracks></app-latest-tracks>
+    <app-tracks-list [tracks]="tracks"></app-tracks-list>
     <h2 class="my-4">Tus playlists</h2>
     <app-playlists-grid></app-playlists-grid>
     <h2 class="my-4">Artistas a los que sigues</h2>

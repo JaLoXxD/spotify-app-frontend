@@ -1,14 +1,9 @@
-import {
-    Component,
-    EventEmitter,
-    Input,
-    OnInit,
-    Output,
-    ViewChild,
-    ElementRef,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TrackItem } from '../../../models/tracks-response.model';
+import { PlayerService } from '../../../services/player.service';
+import { HttpHeaders } from '@angular/common/http';
+import { UserService } from '../../../services/user.service';
 
 @Component({
     selector: 'app-tracks-list',
@@ -16,9 +11,8 @@ import { TrackItem } from '../../../models/tracks-response.model';
     styleUrls: ['./tracks-list.component.css'],
 })
 export class TracksListComponent implements OnInit {
-    @ViewChild('tracksTable', { static: false }) tracksTable!: ElementRef;
-
     @Input() tracks!: Array<TrackItem>;
+    @Input() pagination: boolean = false;
     @Input() pages: number = 1;
 
     @Output() changePage: EventEmitter<number> = new EventEmitter<number>();
@@ -26,7 +20,7 @@ export class TracksListComponent implements OnInit {
     public currentPage: number = 0;
     public pagesItems: Array<number> = [];
 
-    constructor(private _router: Router, private _route: ActivatedRoute) {}
+    constructor(private _router: Router, private _playerService: PlayerService, private _userService: UserService, private _route: ActivatedRoute) {}
 
     ngOnInit(): void {
         for (let i = 0; i < this.pages; i++) {
@@ -81,7 +75,32 @@ export class TracksListComponent implements OnInit {
         });
     }
 
-    public playAudio() {
-        
+    public playSong(uri: string) {
+        if (!this.currentDevice) {
+            return;
+        }
+        const body = {
+            position_ms: 0,
+            uris: [uri],
+        };
+        const headers = new HttpHeaders({
+            Authorization: this._userService.userToken.value || '',
+            'Content-Type': 'application/json',
+        });
+        const options = { headers };
+        this._playerService
+            .startOrResumePlayer(this.currentDevice, body, options)
+            .subscribe({
+                next: (res) => {
+                    this._playerService.isPlaying = true;
+                },
+                error: (err) => {
+                    console.log(err);
+                },
+            });
+    };
+
+    public get currentDevice(): string | undefined {
+        return this._playerService.currentDevice;
     }
 }

@@ -1,10 +1,15 @@
 <div class="tracks-container">
-    <table #tracksTable>
+    <table>
         <tbody>
             <tr class="track-card" *ngFor="let currentTrack of tracks; let i = index">
                 <td>{{currentPage * 10 + i + 1}}</td>
                 <td class="d-flex gap-3 w-50">
-                    <img [src]="currentTrack.track.album.images[0].url" alt="">
+                    <div class="img-container position-relative">
+                        <img [src]="currentTrack.track.album.images[0].url" alt="" />
+                        <div class="play position-absolute" (click)="playSong(currentTrack.track.uri)">
+                            <i class="fa-solid fa-play"></i>
+                        </div>
+                    </div>
                     <div class="track-info">
                         <p class="track-name">{{currentTrack.track.name}}</p>
                         <p class="track-artists"><span
@@ -23,7 +28,7 @@
             </tr>
         </tbody>
     </table>
-    <div class="pages-container">
+    <div *ngIf="pagination" class="pages-container">
         <div class="item" *ngIf="pages > 5 && this.currentPage + 1 > 4" (click)="onChangePage(1)" [ngClass]="{'active': currentPage + 1 === 1}">
             1
         </div>

@@ -7,7 +7,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar/app-navbar.component';
 import { HomeComponent } from './views/home/app.home.component';
-import { LatestTracksComponent } from './components/latest-tracks/latest-tracks.component';
 import { PlaylistsGridComponent } from './components/playlists/grid/playlists-grid.component';
 import { PlayerComponent } from './components/player/player.component';
 import { dropdownDirective } from './shared/dropdown.directive';
@@ -25,7 +24,6 @@ import { SpinnerComponent } from './shared/components/spinner/spinner.component'
         AppComponent,
         NavbarComponent,
         HomeComponent,
-        LatestTracksComponent,
         PlaylistsGridComponent,
         PlayerComponent,
         FollowedArtists,

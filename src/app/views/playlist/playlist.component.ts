@@ -63,7 +63,7 @@ export class PlaylistComponent implements OnInit {
     public createOptions(): Object {
         const headers = new HttpHeaders({
             Authorization:
-                this._userService.userToken ||
+                this._userService.userToken.value ||
                 localStorage.getItem('token') ||
                 '',
             'Content-Type': 'application/json',

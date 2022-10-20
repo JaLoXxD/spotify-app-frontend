@@ -1,9 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { playlistItem } from '../../../models/user-playlists-response.model';
-import { UserService } from '../../../services/user.service';
+import { UserService, PlayerService } from 'src/app/services';
 import { HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { PlayerService } from '../../../services/player.service';
 @Component({
     selector: 'app-playlists-grid',
     templateUrl: './playlists-grid.component.html',
@@ -23,7 +22,7 @@ export class PlaylistsGridComponent implements OnInit {
     ngOnInit(): void {
         if (localStorage.getItem('token')) {
             const headers = new HttpHeaders({
-                Authorization: this._userService.userToken || '',
+                Authorization: this._userService.userToken.value || '',
                 'Content-Type': 'application/json',
             });
 
@@ -46,6 +45,5 @@ export class PlaylistsGridComponent implements OnInit {
 
     public playPlaylist() {
         this._playerService.playType = 'playlist';
-        // this._playerService.playSongs(uris);
     }
 }

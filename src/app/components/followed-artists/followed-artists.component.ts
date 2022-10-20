@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { UserService } from '../../services/user.service';
 import { HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { UserService } from 'src/app/services';
 import { ArtistsItem } from '../../models/user-followed-artists-response.model';
 
 @Component({
@@ -21,7 +21,7 @@ export class FollowedArtists implements OnInit {
     ngOnInit(): void {
         if (localStorage.getItem('token')) {
             const headers = new HttpHeaders({
-                Authorization: this._userService.userToken || '',
+                Authorization: this._userService.userToken.value || '',
                 'Content-Type': 'application/json',
             });
 

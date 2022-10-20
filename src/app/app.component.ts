@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AuthService } from './services/auth.service';
 import { PlayerService } from './services/player.service';
+import { UserService } from './services/user.service';
 
 @Component({
     selector: 'app-root',
@@ -11,18 +11,24 @@ export class AppComponent implements OnInit, OnDestroy {
     title = 'Spotify';
     public token: string | null = null;
 
-    constructor(private _playerService: PlayerService) {}
+    constructor(
+        private _playerService: PlayerService,
+        private _userService: UserService,
+    ) {}
 
     ngOnInit() {
-        this.token = localStorage.getItem('token');
-        if(this.token){
-            this._playerService.startSpotifyPlayer(this.token.replace('Bearer ',''))
-        }
+        this._userService.userToken.subscribe(token => {
+            console.log(token);
+            console.log(this._playerService.player);
+            if(!token) return;
+            console.log('paso' + token);
+            this._playerService.startSpotifyPlayer(
+                token.replace('Bearer ', '')
+            );
+        });
     }
 
     ngOnDestroy(): void {
-        if(this._playerService.player){
-            this._playerService.destroySpotifyPlayer();
-        }
+        this._playerService.destroySpotifyPlayer();
     }
 }

@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpHeaders } from '@angular/common/http';
 
 @Component({
     selector: 'app-login',
@@ -11,17 +10,10 @@ import { HttpHeaders } from '@angular/common/http';
 })
 export class LoginComponent implements OnInit{
     private _redirectUri: string = environment.redirectUri;
-    private _code: string = '';
 
-    constructor(
-        private _authService: AuthService,
-        private _route: ActivatedRoute,
-        private _router: Router
-    ) {}
+    constructor() {}
 
-    ngOnInit() {
-
-    }
+    ngOnInit() {}
 
     public spotifyRedirect() {
         const scope =

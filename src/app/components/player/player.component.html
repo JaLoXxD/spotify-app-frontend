@@ -1,4 +1,4 @@
-<div class="player-container d-flex justify-content-between align-items-center">
+<div *ngIf="isLogin && isPremium" class="player-container d-flex justify-content-between align-items-center">
     <div class="song overflow-hidden d-flex align-items-center justify-content-start">
         <img *ngIf="currentTrack" [src]="currentTrack.album.images[0].url" [alt]="currentTrack.name">
         <div class="track-info">

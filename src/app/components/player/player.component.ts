@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { PlayerService } from '../../services/player.service';
-import { UserService } from '../../services/user.service';
 import { HttpHeaders } from '@angular/common/http';
+import { Subscription } from 'rxjs';
+import { PlayerService, UserService, TrackService, AuthService } from 'src/app/services';
 import { PlaybackStateResponse } from '../../models/player/playback-state-response.model';
 import { Device } from '../../models/player/available-devices-response.model';
 import { PlayerTrackResponse } from '../../models/player/player-track-response.model';
@@ -19,65 +19,77 @@ export class PlayerComponent implements OnInit {
     public selectedDevice: Device | null = null;
     public currentTrack!: PlayerTrackResponse | undefined;
     public name: string | undefined = 'empty';
-    public trackTimer: ReturnType<typeof setInterval> | null = null;
+    public trackTimer: any = [];
     public trackProgress: number = 0;
 
+    private _trackSubscriber!: Subscription;
+
     constructor(
-        public _playerService: PlayerService,
+        private _playerService: PlayerService,
         private _userService: UserService,
+        private _trackService: TrackService,
+        private _authService: AuthService,
         private _ref: ChangeDetectorRef
     ) {}
 
     ngOnInit(): void {
-        const headers = new HttpHeaders({
-            Authorization: localStorage.getItem('token') || '',
-            'Content-Type': 'application/json',
-        });
-        const options = { headers };
-        this.getPlaybackState(options);
-
-        //REVISAR DONDE SE USA PARA BORRAR userTokenS
-        // this._userService.userTokenS.subscribe((token) => {
-        // });
-
         this._playerService.searchDevices.subscribe((search) => {
+            const headers = new HttpHeaders({
+                Authorization: this._userService.userToken.value || '',
+                'Content-Type': 'application/json',
+            });
+            const options = { headers };
             if (search) {
                 this.getAvailableDevices(options);
             }
         });
         this._playerService.currentTrack.subscribe((track) => {
+            this.stopTrackTimer();
             this.currentTrack = track;
             this.name = track?.name;
-            console.log(this.currentTrack);
-            console.log(this._playerService.repeatMode);
-            console.log(this._playerService.shuffle);
-            if(this._playerService.duration > 0 && this._playerService.duration === this._playerService.position && this._playerService.repeatMode === 0 && !this._playerService.shuffle){
+            if (
+                this._playerService.duration > 0 &&
+                this._playerService.duration === this._playerService.position &&
+                this._playerService.repeatMode === 0 &&
+                !this._playerService.shuffle
+            ) {
                 this.pausePlayer();
             }
-            if (this.currentTrack) {
-                console.log('enter');
-                this.createTrackTimer();
-            }
+            this._playerService.player?.getCurrentState().then((state) => {
+                console.log(state);
+                if (!state?.paused) {
+                    this._playerService.isPlaying = true;
+                    this.createTrackTimer();
+                    return;
+                }
+                if (state?.paused) {
+                    this.stopTrackTimer();
+                    this._playerService.isPlaying = false;
+                    return;
+                }
+            });
             this._ref.detectChanges();
         });
     }
 
     createTrackTimer() {
         this.stopTrackTimer();
-        this.trackTimer = setInterval(() => {
+        this._trackSubscriber = this._playerService.trackTimer.subscribe(() => {
             this._playerService.trackPosition =
-            this._playerService.calculateTime(this._playerService.position);
-            console.log(this._playerService.trackPosition);
-            console.log(this._playerService.trackDuration);
+                this._trackService.calcTrackDuration(
+                    this._playerService.position
+                );
             this._playerService.position += 1000;
             this.calcTrackProgress();
             this._ref.detectChanges();
-        }, 1000);
-        console.log(this.trackTimer);
+        });
     }
 
     stopTrackTimer() {
-        clearInterval(this.trackTimer!);
+        this._trackSubscriber?.unsubscribe();
+    }
+
+    resetTrackProgress() {
         this.trackProgress = 0;
     }
 
@@ -99,11 +111,11 @@ export class PlayerComponent implements OnInit {
             return;
         }
         const body = {
-            position_ms: 0,
+            position_ms: this._playerService.position,
             uris: ['spotify:track:2HsjCukWx0BWvpm660mDyp'],
         };
         const headers = new HttpHeaders({
-            Authorization: this._userService.userToken || '',
+            Authorization: this._userService.userToken.value || '',
             'Content-Type': 'application/json',
         });
         const options = { headers };
@@ -122,15 +134,16 @@ export class PlayerComponent implements OnInit {
     }
 
     pausePlayer() {
+        this.stopTrackTimer();
         if (!this.currentDevice) {
             return;
         }
         const body = {
-            position_ms: 0,
+            position_ms: this._playerService.position,
             uris: ['spotify:track:2HsjCukWx0BWvpm660mDyp'],
         };
         const headers = new HttpHeaders({
-            Authorization: this._userService.userToken || '',
+            Authorization: this._userService.userToken.value || '',
             'Content-Type': 'application/json',
         });
         const options = { headers };
@@ -138,8 +151,8 @@ export class PlayerComponent implements OnInit {
             .pausePlayer(this.currentDevice, body, options)
             .subscribe({
                 next: (res) => {
-                    this.stopTrackTimer();
-                    this.getPlaybackState(options);
+                    // this.getPlaybackState(options);
+                    console.log('track paused');
                     this._playerService.isPlaying = false;
                 },
                 error: (err) => {
@@ -150,7 +163,7 @@ export class PlayerComponent implements OnInit {
 
     nextTrack() {
         const headers = new HttpHeaders({
-            Authorization: this._userService.userToken || '',
+            Authorization: this._userService.userToken.value || '',
             'Content-Type': 'application/json',
         });
         const options = { headers };
@@ -158,12 +171,13 @@ export class PlayerComponent implements OnInit {
             .nextTrack(this.currentDevice, options)
             .subscribe((resp) => {
                 console.log(resp);
+                this.resetTrackProgress();
             });
     }
 
     previousTrack() {
         const headers = new HttpHeaders({
-            Authorization: this._userService.userToken || '',
+            Authorization: this._userService.userToken.value || '',
             'Content-Type': 'application/json',
         });
         const options = { headers };
@@ -171,12 +185,13 @@ export class PlayerComponent implements OnInit {
             .previousTrack(this.currentDevice, options)
             .subscribe((resp) => {
                 console.log(resp);
+                this.resetTrackProgress();
             });
     }
 
     toogleRepeatMode() {
         const headers = new HttpHeaders({
-            Authorization: this._userService.userToken || '',
+            Authorization: this._userService.userToken.value || '',
             'Content-Type': 'application/json',
         });
         const options = { headers };
@@ -203,12 +218,15 @@ export class PlayerComponent implements OnInit {
     }
 
     getAvailableDevices(options: Object) {
+        console.log(options);
         this._playerService.getAvailableDevices(options).subscribe((resp) => {
+            console.log(resp);
             this.availableDevices = resp?.devices || null;
             this.selectedDevice =
                 this.availableDevices != null ? this.availableDevices[0] : null;
             this._ref.detectChanges();
             console.log(this.availableDevices);
+            console.log(this.selectedDevice);
         });
     }
 
@@ -228,7 +246,7 @@ export class PlayerComponent implements OnInit {
 
     setVolume() {
         const headers = new HttpHeaders({
-            Authorization: this._userService.userToken || '',
+            Authorization: this._userService.userToken.value || '',
             'Content-Type': 'application/json',
         });
         const options = { headers };
@@ -259,5 +277,13 @@ export class PlayerComponent implements OnInit {
 
     public get trackPosition(): string {
         return this._playerService.trackPosition;
+    }
+
+    public get isPremium(): boolean {
+        return this._userService.isPremium;
+    }
+
+    public get isLogin(): boolean {
+        return this._authService.isLogin;
     }
 }

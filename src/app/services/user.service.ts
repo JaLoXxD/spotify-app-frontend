@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { UserProfileResponseModel } from '../models/user-profile-response.model';
 import { UserPlaylistsResponseModel } from '../models/user-playlists-response.model';
@@ -11,10 +11,9 @@ import { UserFollowedArtistsResponse } from '../models/user-followed-artists-res
 })
 export class UserService {
     private _spotifyApiUrl = environment.spotifyApiUrl;
-
-    public userTokenS = new Subject<string | null>();
     public userInfo!: UserProfileResponseModel;
-    public userToken: string | null = null;
+    public userToken: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
+    public isPremium: boolean = false;
 
     constructor(private _http: HttpClient) {}
 

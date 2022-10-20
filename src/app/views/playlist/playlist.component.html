@@ -13,5 +13,5 @@
         <app-info-label [centered]="true">{{playlistInfo.tracks.total}} <i class="fa-solid fa-music"></i>
         </app-info-label>
     </div>
-    <app-tracks-list [tracks]="tracks" [pages]="pages" (changePage)="onChangePage($event)"></app-tracks-list>
+    <app-tracks-list [tracks]="tracks" [pagination]="true" [pages]="pages" (changePage)="onChangePage($event)"></app-tracks-list>
 </div>

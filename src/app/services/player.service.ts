@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, interval, Observable, Subscription } from 'rxjs';
 import { PlaybackStateResponse } from '../models/player/playback-state-response.model';
 import { AvailableDevicesResponse } from '../models/player/available-devices-response.model';
 import { PlayerTrackResponse } from '../models/player/player-track-response.model';
 import { UserService } from './user.service';
+import { TrackService } from './track.service';
 
 @Injectable({
     providedIn: 'root',
@@ -25,12 +26,18 @@ export class PlayerService {
     public volume: number = 50;
     public trackDuration: string = '0:00';
     public trackPosition: string = '0:00';
+    public paused: boolean = false;
     public position: number = 0;
     public duration: number = 0;
     public repeatMode: number = 0;
     public shuffle: boolean = false;
+    public trackTimer: Observable<number> = interval(1000);
 
-    constructor(private _http: HttpClient, private _userService: UserService) {}
+    constructor(
+        private _http: HttpClient,
+        private _userService: UserService,
+        private _trackService: TrackService
+    ) {}
 
     public getPlaybackState(
         options: Object
@@ -121,6 +128,7 @@ export class PlayerService {
     }
 
     public startSpotifyPlayer(access_token: string) {
+        console.log(access_token);
         window.onSpotifyWebPlaybackSDKReady = () => {
             console.log('spotify script loaded');
             this.player = new Spotify.Player({
@@ -152,7 +160,7 @@ export class PlayerService {
             uris: uris,
         };
         const headers = new HttpHeaders({
-            Authorization: this._userService.userToken || '',
+            Authorization: this._userService.userToken.value || '',
             'Content-Type': 'application/json',
         });
         const options = { headers };
@@ -171,14 +179,22 @@ export class PlayerService {
     }
 
     private _startPlayerListeners() {
-        if (this.player) {
+        if (this.player) {;
             this.player.addListener('ready', ({ device_id }) => {
                 console.log(`Ready with Device ID ${device_id}`);
+                this.currentDevice = device_id;
                 this.searchDevices.next(true);
             });
             this.player.addListener(
                 'player_state_changed',
-                ({ repeat_mode, shuffle, position, duration, track_window: { current_track }}) => {
+                ({
+                    repeat_mode,
+                    shuffle,
+                    paused,
+                    position,
+                    duration,
+                    track_window: { current_track },
+                }) => {
                     this._currentTrack.next(current_track);
                     console.log('send track name');
                     console.log(`current state:`);
@@ -187,22 +203,18 @@ export class PlayerService {
                     console.log('Duration of Song', duration);
                     this.repeatMode = repeat_mode;
                     this.shuffle = shuffle;
+                    this.paused = paused;
                     this.position = position;
                     this.duration = duration;
-                    this.trackDuration = this.calculateTime(duration);
-                    this.trackPosition = this.calculateTime(position);
+                    this.trackDuration =
+                        this._trackService.calcTrackDuration(duration);
+                    this.trackPosition =
+                        this._trackService.calcTrackDuration(position);
                 }
             );
         } else {
             console.log(`player doesn't exists`);
         }
-    }
-
-    calculateTime(timeInMs: number) {
-        const mins = Math.floor(timeInMs / 60000);
-        const seconds = Math.round((timeInMs / 60000 - mins) * 60);
-        const finalSeconds = seconds < 10 ? `0${seconds}` : seconds;
-        return `${mins}:${finalSeconds}`;
     }
 
     public get currentTrack(): Observable<PlayerTrackResponse | undefined> {

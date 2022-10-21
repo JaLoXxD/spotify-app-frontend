@@ -1,0 +1,8 @@
+<div class="playlist-card" (click)="playlistInfo(playlist.id)">
+    <div class="img-cont">
+        <img [src]="playlist.images[0] ? playlist.images[0].url : placeholderPlaylistImg" alt="">
+        <div class="play" (click)="playPlaylist()" ><i class="fa-solid fa-play"></i></div>
+    </div>
+    <h5 class="mt-3">{{playlist.name}}</h5>
+    <span>De {{playlist.owner.display_name}}</span>
+</div>

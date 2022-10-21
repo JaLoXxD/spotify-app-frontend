@@ -10,13 +10,9 @@ import { Router } from '@angular/router';
 })
 export class PlaylistsGridComponent implements OnInit {
     public playlists: playlistItem[] = [];
-    public placeholderPlaylistImg: string =
-        'https://via.placeholder.com/450x350';
 
     constructor(
         private _userService: UserService,
-        private _router: Router,
-        private _playerService: PlayerService
     ) {}
 
     ngOnInit(): void {
@@ -37,13 +33,5 @@ export class PlaylistsGridComponent implements OnInit {
             console.log(resp);
             this.playlists = resp.items;
         });
-    }
-
-    public playlistInfo(id: string) {
-        this._router.navigate(['/playlist', id]);
-    }
-
-    public playPlaylist() {
-        this._playerService.playType = 'playlist';
     }
 }

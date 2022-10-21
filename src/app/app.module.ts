@@ -15,8 +15,9 @@ import { PlaylistComponent } from './views/playlist/playlist.component';
 import { InfoLabelComponent } from './shared/components/info-label/info-label.component';
 import { TracksListComponent } from './shared/components/tracks-list/tracks-list.component';
 import { LoginComponent } from './views/login/login.component';
-/* INTERCEPTORS */
+import { PlaylistCard } from './components/playlists/card/playlist-card.component';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
+/* INTERCEPTORS */
 import { SpinnerComponent } from './shared/components/spinner/spinner.component';
 
 @NgModule({
@@ -28,6 +29,7 @@ import { SpinnerComponent } from './shared/components/spinner/spinner.component'
         PlayerComponent,
         FollowedArtists,
         PlaylistComponent,
+        PlaylistCard,
         dropdownDirective,
         InfoLabelComponent,
         TracksListComponent,

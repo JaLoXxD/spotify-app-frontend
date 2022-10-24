@@ -13,9 +13,11 @@ describe('InfoLabelComponent tests', () => {
         component = fixture.componentInstance;
     });
 
-    it("should add centered class", () => {
+    it('should add centered class', () => {
         component.centered = true;
         fixture.detectChanges();
-        expect(fixture.nativeElement.querySelector('.detail-card.centered')).toBeTruthy();
-    })
+        expect(
+            fixture.nativeElement.querySelector('.detail-card.centered')
+        ).toBeTruthy();
+    });
 });

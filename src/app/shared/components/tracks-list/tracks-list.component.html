@@ -29,16 +29,21 @@
         </tbody>
     </table>
     <div *ngIf="pagination" class="pages-container">
-        <div class="item" *ngIf="pages > 5 && this.currentPage + 1 > 4" (click)="onChangePage(1)" [ngClass]="{'active': currentPage + 1 === 1}">
-            1
+        <div *ngIf="pages > 5 && this.currentPage + 1 > 4" class="d-flex">
+            <div class="item" (click)="onChangePage(1)" [ngClass]="{'active': currentPage + 1 === 1}">
+                1
+            </div>
+            <span class="mt-auto ms-3 separator">...</span>
+
         </div>
-        ...
         <div class="item" *ngFor="let page of generateArray();let i = index;" (click)="onChangePage(page)" [ngClass]="{'active': page === currentPage + 1}">
             {{page}}
         </div>
-        ...
-        <div class="item" *ngIf="pages > 5 && this.currentPage + 1 < pages - 2" (click)="onChangePage(pages)" [ngClass]="{'active': pages === currentPage + 1}">
-            {{pages}}
+        <div *ngIf="pages > 5 && this.currentPage + 1 < pages - 2" class="d-flex">
+            <span class="mt-auto me-3 separator">...</span>
+            <div class="item" (click)="onChangePage(pages)" [ngClass]="{'active': pages === currentPage + 1}">
+                {{pages}}
+            </div>
         </div>
     </div>
 </div>

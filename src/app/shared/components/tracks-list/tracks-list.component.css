@@ -120,3 +120,8 @@ p {
 .pages-container .item.active{
     background-color:#128c3d;
 }
+
+.pages-container .separator{
+    font-size:25px;
+    color:#1ed760;
+}

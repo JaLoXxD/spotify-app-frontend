@@ -6,6 +6,5 @@ import { Component, Input } from '@angular/core';
     styleUrls: ['./info-label.component.css'],
 })
 export class InfoLabelComponent {
-    @Input() text: string | null | undefined = '';
     @Input() centered: boolean = false;
 }

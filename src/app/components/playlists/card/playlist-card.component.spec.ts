@@ -5,7 +5,7 @@ import { PlaylistCard } from './playlist-card.component';
 import { PlayerService } from 'src/app/services';
 import { By } from '@angular/platform-browser';
 
-describe('PlaylistCard tests', () => {
+describe('PlaylistCardComponent tests', () => {
     let fixture: ComponentFixture<PlaylistCard>;
     let component: PlaylistCard;
 

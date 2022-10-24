@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { playlistItem } from '../../../models/user-playlists-response.model';
-import { UserService, PlayerService } from 'src/app/services';
+import { UserService } from 'src/app/services';
 import { HttpHeaders } from '@angular/common/http';
-import { Router } from '@angular/router';
 @Component({
     selector: 'app-playlists-grid',
     templateUrl: './playlists-grid.component.html',

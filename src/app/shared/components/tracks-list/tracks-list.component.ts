@@ -11,7 +11,7 @@ import { UserService } from '../../../services/user.service';
     styleUrls: ['./tracks-list.component.css'],
 })
 export class TracksListComponent implements OnInit {
-    @Input() tracks!: Array<TrackItem>;
+    @Input() tracks: Array<TrackItem> | null = null;
     @Input() pagination: boolean = false;
     @Input() pages: number = 1;
 
@@ -20,12 +20,13 @@ export class TracksListComponent implements OnInit {
     public currentPage: number = 0;
     public pagesItems: Array<number> = [];
 
-    constructor(private _router: Router, private _playerService: PlayerService, private _userService: UserService, private _route: ActivatedRoute) {}
+    constructor(private _playerService: PlayerService, private _userService: UserService) {}
 
     ngOnInit(): void {
         for (let i = 0; i < this.pages; i++) {
             this.pagesItems.push(i + 1);
         }
+        console.log(this.tracks);
     }
 
     public calcTrackDuration(duration: number) {

@@ -1,4 +1,4 @@
-<div class="tracks-container">
+<div class="tracks-container" *ngIf="tracks">
     <table>
         <tbody>
             <tr class="track-card" *ngFor="let currentTrack of tracks; let i = index">

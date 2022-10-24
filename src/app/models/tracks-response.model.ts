@@ -54,16 +54,12 @@ export interface Artist {
     href:          string;
     id:            string;
     name:          string;
-    type:          Type;
+    type:          string;
     uri:           string;
 }
 
 export interface ExternalUrls {
     spotify: string;
-}
-
-export enum Type {
-    Artist = "artist",
 }
 
 export interface Image {

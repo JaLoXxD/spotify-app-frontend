@@ -1,4 +1,5 @@
-<div *ngIf="isLogin">
+<app-spinner *ngIf="isLoading"></app-spinner>
+<div *ngIf="isLogin && !isLoading">
     <div *ngIf="userInfo" class="user-cont mb-3">
         <div class="profile-img">
             <a [href]="userInfo.external_urls.spotify" target="_blank">

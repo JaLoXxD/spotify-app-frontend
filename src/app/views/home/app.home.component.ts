@@ -16,6 +16,7 @@ import { TrackItem } from '../../models/tracks-response.model';
     styleUrls: ['./app.home.component.css'],
 })
 export class HomeComponent implements OnInit {
+    public isLoading: boolean = true;
     public userTracks!: Array<UserTracksResponseModel>;
     public userPlaylists!: playlistItem[];
     public totalFollowerArtists: number = 0;
@@ -42,8 +43,10 @@ export class HomeComponent implements OnInit {
             }
             if (localStorage.getItem('token')) {
                 console.log('start token');
-                if(!this._userService.userToken.value){
-                    this._userService.userToken.next(localStorage.getItem('token')!);
+                if (!this._userService.userToken.value) {
+                    this._userService.userToken.next(
+                        localStorage.getItem('token')!
+                    );
                 }
                 const headers = new HttpHeaders({
                     Authorization: localStorage.getItem('token') || '',
@@ -54,8 +57,9 @@ export class HomeComponent implements OnInit {
 
                 console.log(options);
 
-                this.getUserProfile(options);
-                this.getLatestTracks(options, 5);
+                await this.getUserProfile(options);
+                await this.getLatestTracks(options, 5);
+                this.isLoading = false;
             }
         });
     }
@@ -81,7 +85,7 @@ export class HomeComponent implements OnInit {
                     localStorage.setItem('token', token);
                     this._authService.isLogin = true;
                     this._authService.setTokenExpirationDate(res.expires_in);
-                    if(!this._userService.userToken.value){
+                    if (!this._userService.userToken.value) {
                         this._userService.userToken.next(token);
                     }
                     resolve(true);
@@ -94,13 +98,16 @@ export class HomeComponent implements OnInit {
         });
     }
 
-    public getUserProfile(options: Object) {
-        this._userService.getUserProfile(options).subscribe((res) => {
-            console.log('user profile');
-            console.log(res);
-            this._userService.userInfo = res;
-            this._userService.isPremium =
-                res.product === 'premium' ? true : false;
+    public getUserProfile(options: Object): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            this._userService.getUserProfile(options).subscribe((res) => {
+                console.log('user profile');
+                console.log(res);
+                this._userService.userInfo = res;
+                this._userService.isPremium =
+                    res.product === 'premium' ? true : false;
+                resolve(true);
+            });
         });
     }
 
@@ -108,10 +115,15 @@ export class HomeComponent implements OnInit {
         this.totalFollowerArtists = total;
     }
 
-    public getLatestTracks(options: Object, limit: number) {
-        this._trackService.getUserTracks(options, limit).subscribe((resp) => {
-            console.log(resp);
-            this.tracks = resp.items;
+    public getLatestTracks(options: Object, limit: number): Promise<boolean> {
+        return new Promise((resolve) => {
+            this._trackService
+                .getUserTracks(options, limit)
+                .subscribe((resp) => {
+                    console.log(resp);
+                    this.tracks = resp.items;
+                    resolve(true);
+                });
         });
     }
 
@@ -123,9 +135,9 @@ export class HomeComponent implements OnInit {
         return this._userService.userInfo;
     }
 
-    
-    public get userImage() : string {
-        return this.userInfo.images[0]?.url ? this.userInfo.images[0].url : '../../../assets/images/user-logo.png'
+    public get userImage(): string {
+        return this.userInfo.images[0]?.url
+            ? this.userInfo.images[0].url
+            : '../../../assets/images/user-logo.png';
     }
-    
 }

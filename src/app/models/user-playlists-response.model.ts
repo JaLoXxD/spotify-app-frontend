@@ -21,7 +21,7 @@ export interface playlistItem {
     public: boolean;
     snapshot_id: string;
     tracks: Tracks;
-    type: ItemType;
+    type: string;
     uri: string;
 }
 
@@ -40,19 +40,11 @@ export interface Owner {
     external_urls: ExternalUrls;
     href: string;
     id: string;
-    type: OwnerType;
+    type: string;
     uri: string;
-}
-
-export enum OwnerType {
-    User = 'user',
 }
 
 export interface Tracks {
     href: string;
     total: number;
-}
-
-export enum ItemType {
-    Playlist = 'playlist',
 }

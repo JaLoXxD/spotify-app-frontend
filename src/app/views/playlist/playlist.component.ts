@@ -74,8 +74,6 @@ export class PlaylistComponent implements OnInit {
         return options;
     }
 
-    getUserById(userId: string) {}
-
     async onChangePage(pageNumber: number) {
         this._offset = (pageNumber - 1) * 10;
         const options = this.createOptions();

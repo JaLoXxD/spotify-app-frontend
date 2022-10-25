@@ -44,8 +44,4 @@ export class UserService {
             options
         );
     }
-
-    public getUserById(userId:string, options: Object): Observable<any> {
-        return this._http.get<any>(`${this._spotifyApiUrl}/users/${userId}`)
-    }
 }

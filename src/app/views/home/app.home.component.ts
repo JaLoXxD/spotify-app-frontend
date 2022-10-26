@@ -138,6 +138,6 @@ export class HomeComponent implements OnInit {
     public get userImage(): string {
         return this.userInfo.images[0]?.url
             ? this.userInfo.images[0].url
-            : '../../../assets/images/user-logo.png';
+            : 'assets/images/user-logo.png';
     }
 }

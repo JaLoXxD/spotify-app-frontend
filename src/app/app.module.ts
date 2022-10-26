@@ -16,9 +16,9 @@ import { InfoLabelComponent } from './shared/components/info-label/info-label.co
 import { TracksListComponent } from './shared/components/tracks-list/tracks-list.component';
 import { LoginComponent } from './views/login/login.component';
 import { PlaylistCard } from './components/playlists/card/playlist-card.component';
-import { AuthInterceptorService } from './services/auth-interceptor.service';
-/* INTERCEPTORS */
 import { SpinnerComponent } from './shared/components/spinner/spinner.component';
+/* INTERCEPTORS */
+import { AuthInterceptorService } from './services/auth-interceptor.service';
 
 @NgModule({
     declarations: [

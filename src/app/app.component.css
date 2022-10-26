@@ -1,10 +1,8 @@
 .container {
     margin-bottom: 100px;
     padding: 0;
-    margin-left: 80px;
 }
 
-.content {
-    width: calc(100% - 40px) !important;
-    margin-left: auto;
+.principal-container{
+    margin-left:80px;
 }

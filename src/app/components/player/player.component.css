@@ -1,6 +1,7 @@
 .player-container {
     position: fixed;
     bottom: 0;
+    right:0;
     background-color: #000;
     width: calc(100% - 80px);
     padding: 10px 30px;

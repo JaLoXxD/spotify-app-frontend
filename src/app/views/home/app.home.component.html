@@ -22,7 +22,7 @@
     <h2 class="mb-2">Tus me gusta</h2>
     <app-tracks-list [tracks]="tracks"></app-tracks-list>
     <h2 class="my-4">Tus playlists</h2>
-    <app-playlists-grid></app-playlists-grid>
+    <app-playlists-grid [limit]="5"></app-playlists-grid>
     <h2 class="my-4">Artistas a los que sigues</h2>
     <app-followed-artists (totalFollowedArtists)="getTotalFollowedArtists($event)"></app-followed-artists>
 </div>

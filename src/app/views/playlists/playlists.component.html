@@ -1,0 +1,7 @@
+<app-spinner *ngIf="isLoading"></app-spinner>
+<div class="playlists-container">
+    <div class="title my-4">
+        <h1 class="text-center">Tus Playlists</h1>
+    </div>
+    <app-playlists-grid (loading)="onLoading($event)"></app-playlists-grid>
+</div>

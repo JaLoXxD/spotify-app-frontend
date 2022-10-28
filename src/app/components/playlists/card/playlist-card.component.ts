@@ -17,7 +17,7 @@ export class PlaylistCard {
     constructor(private _router: Router, private _playerService: PlayerService){}
 
     public playlistInfo(id: string) {
-        this._router.navigate(['/playlist', id]);
+        this._router.navigate([`/playlists`, id]);
     }
 
     public playPlaylist() {

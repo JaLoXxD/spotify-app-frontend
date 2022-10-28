@@ -4,6 +4,7 @@
     background-color: #181818;
     border-radius: 5px;
     transition: all 0.3s ease-in-out;
+    cursor: pointer;
 }
 
 .playlist-card:hover {
@@ -34,7 +35,7 @@
     transition: all 0.3s ease-in-out;
 }
 
-.playlist-card .img-cont .play .fa-play::before{
+.playlist-card .img-cont .play .fa-play::before {
     color: #000 !important;
 }
 

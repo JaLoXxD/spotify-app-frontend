@@ -19,7 +19,7 @@ import { PlaylistCard } from './components/playlists/card/playlist-card.componen
 import { SpinnerComponent } from './shared/components/spinner/spinner.component';
 /* INTERCEPTORS */
 import { AuthInterceptorService } from './services/auth-interceptor.service';
-
+import { PlaylistsComponent } from './views/playlists/playlists.component';
 @NgModule({
     declarations: [
         AppComponent,
@@ -29,6 +29,7 @@ import { AuthInterceptorService } from './services/auth-interceptor.service';
         PlayerComponent,
         FollowedArtists,
         PlaylistComponent,
+        PlaylistsComponent,
         PlaylistCard,
         dropdownDirective,
         InfoLabelComponent,
@@ -36,7 +37,11 @@ import { AuthInterceptorService } from './services/auth-interceptor.service';
         LoginComponent,
         SpinnerComponent,
     ],
-    imports: [BrowserModule, AppRoutingModule, HttpClientModule],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+    ],
     providers: [
         {
             provide: HTTP_INTERCEPTORS,

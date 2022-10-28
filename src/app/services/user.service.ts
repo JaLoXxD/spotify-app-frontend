@@ -28,10 +28,15 @@ export class UserService {
 
     public getUserPlaylists(
         options: Object,
-        limit: number
+        limit: number | null
     ): Observable<UserPlaylistsResponseModel> {
+
+        const url = limit
+            ? `${this._spotifyApiUrl}/me/playlists?limit=${limit}`
+            : `${this._spotifyApiUrl}/me/playlists`; 
+
         return this._http.get<UserPlaylistsResponseModel>(
-            `${this._spotifyApiUrl}/me/playlists?limit=${limit}`,
+            url,
             options
         );
     }

@@ -40,15 +40,28 @@
 
 .playlist-container .playlist-labels {
     display: flex;
-    gap:30px;
-    justify-content:center;
+    gap: 30px;
+    justify-content: center;
     align-items: center;
 }
 
-.playlist-container .playlist-labels i{
-    font-size:14px;
+.playlist-container .playlist-labels i {
+    font-size: 14px;
 }
 
 a {
     text-decoration: none;
+}
+
+.back {
+    color: #1ed760;
+    font-size: 30px;
+    top:0;
+    left:15px;
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+}
+
+.back:hover {
+    transform: scale(1.4);
 }

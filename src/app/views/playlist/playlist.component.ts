@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PlaylistService } from '../../services/playlist.service';
 import { HttpHeaders } from '@angular/common/http';
 import { UserService } from '../../services/user.service';
@@ -24,8 +24,9 @@ export class PlaylistComponent implements OnInit {
     constructor(
         private _playlistService: PlaylistService,
         private _route: ActivatedRoute,
+        private _router: Router,
         private _userService: UserService,
-        private _playerService: PlayerService,
+        private _playerService: PlayerService
     ) {}
 
     ngOnInit(): void {
@@ -46,8 +47,8 @@ export class PlaylistComponent implements OnInit {
                 options
             );
             console.log(tracksRes);
-            const playbackTracksUris:Array<string> = [];
-            if(this._playerService.playType === "playlist") {
+            const playbackTracksUris: Array<string> = [];
+            if (this._playerService.playType === 'playlist') {
                 tracksRes.items.forEach((item: any) => {
                     playbackTracksUris.push(item.track.uri);
                 });
@@ -84,5 +85,9 @@ export class PlaylistComponent implements OnInit {
             options
         );
         this.tracks = tracksRes.items;
+    }
+
+    goBack() {
+        this._router.navigate(['/playlists']);
     }
 }

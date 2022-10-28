@@ -1,5 +1,6 @@
 <app-spinner *ngIf="isLoading"></app-spinner>
-<div class="playlist-container" *ngIf="!isLoading">
+<div class="playlist-container position-relative" *ngIf="!isLoading">
+    <div class="back position-absolute" (click)="goBack()"><i class="fa-solid fa-circle-chevron-left"></i></div>
     <img [src]="playlistInfo.images[0].url" alt="">
     <div class="title mt-4">
         <a [href]="playlistInfo.external_urls.spotify" target="_blank">
@@ -13,5 +14,6 @@
         <app-info-label [centered]="true">{{playlistInfo.tracks.total}} <i class="fa-solid fa-music"></i>
         </app-info-label>
     </div>
-    <app-tracks-list [tracks]="tracks" [pagination]="true" [pages]="pages" (changePage)="onChangePage($event)"></app-tracks-list>
+    <app-tracks-list [tracks]="tracks" [pagination]="true" [pages]="pages" (changePage)="onChangePage($event)">
+    </app-tracks-list>
 </div>

@@ -42,12 +42,6 @@ export class HomeComponent implements OnInit {
                 this._router.navigate([]);
             }
             if (localStorage.getItem('token')) {
-                console.log('start token');
-                if (!this._userService.userToken.value) {
-                    this._userService.userToken.next(
-                        localStorage.getItem('token')!
-                    );
-                }
                 const headers = new HttpHeaders({
                     Authorization: localStorage.getItem('token') || '',
                     'Content-Type': 'application/json',
@@ -136,8 +130,15 @@ export class HomeComponent implements OnInit {
     }
 
     public get userImage(): string {
-        return this.userInfo.images[0]?.url
-            ? this.userInfo.images[0].url
+      console.log(this.userInfo)
+      const max_width_item = this.userInfo.images.reduce((prev, current) => {
+        if (current.width === null || current.height === null || prev.width === null || prev.height === null) {
+          return prev;
+        }
+        return (prev.width > current.width) ? prev : current;
+      });
+        return max_width_item
+            ? max_width_item.url
             : 'assets/images/user-logo.png';
     }
 }

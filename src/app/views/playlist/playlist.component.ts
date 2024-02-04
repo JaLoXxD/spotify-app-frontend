@@ -46,7 +46,6 @@ export class PlaylistComponent implements OnInit {
                 this._offset.toString(),
                 options
             );
-            console.log(tracksRes);
             const playbackTracksUris: Array<string> = [];
             if (this._playerService.playType === 'playlist') {
                 tracksRes.items.forEach((item: any) => {

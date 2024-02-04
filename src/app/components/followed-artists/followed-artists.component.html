@@ -2,7 +2,7 @@
     <div class="followed-artist" *ngFor="let artist of followedArtists">
         <div class="img-cont">
             <div class="info-cont"><i class="fa-solid fa-plus"></i></div>
-            <img [src]="artist.images[0].url || placeholderArtistImg" alt="">
+            <img [src]="artist.images[0]?.url || placeholderArtistImg" alt="">
         </div>
         <h5 class="text-center mt-2">{{artist.name}}</h5>
     </div>

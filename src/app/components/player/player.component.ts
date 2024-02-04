@@ -111,14 +111,15 @@ export class PlayerComponent implements OnInit {
             return;
         }
         const body = {
-            position_ms: this._playerService.position,
-            uris: ['spotify:track:2HsjCukWx0BWvpm660mDyp'],
+          position_ms: this._playerService.position,
+          uris: [this.currentTrack?.uri],
         };
         const headers = new HttpHeaders({
-            Authorization: this._userService.userToken.value || '',
-            'Content-Type': 'application/json',
+          Authorization: this._userService.userToken.value || '',
+          'Content-Type': 'application/json',
         });
         const options = { headers };
+        console.log(this.currentTrack)
         this._playerService
             .startOrResumePlayer(this.currentDevice, body, options)
             .subscribe({
@@ -126,6 +127,7 @@ export class PlayerComponent implements OnInit {
                     this.stopTrackTimer();
                     this.getPlaybackState(options);
                     this._playerService.isPlaying = true;
+                    this._ref.detectChanges();
                 },
                 error: (err) => {
                     console.log(err);
@@ -138,9 +140,10 @@ export class PlayerComponent implements OnInit {
         if (!this.currentDevice) {
             return;
         }
+        console.log(this.currentTrack)
         const body = {
             position_ms: this._playerService.position,
-            uris: ['spotify:track:2HsjCukWx0BWvpm660mDyp'],
+            uris: [this.currentTrack?.uri],
         };
         const headers = new HttpHeaders({
             Authorization: this._userService.userToken.value || '',
@@ -154,6 +157,8 @@ export class PlayerComponent implements OnInit {
                     // this.getPlaybackState(options);
                     console.log('track paused');
                     this._playerService.isPlaying = false;
+                    console.log(this.isPlaying)
+                    this._ref.detectChanges();
                 },
                 error: (err) => {
                     console.log(err);
@@ -210,6 +215,21 @@ export class PlayerComponent implements OnInit {
             });
     }
 
+    toogleShuffleMode() {
+        const headers = new HttpHeaders({
+            Authorization: this._userService.userToken.value || '',
+            'Content-Type': 'application/json',
+        });
+        const options = { headers };
+        const state: boolean = !this._playerService.shuffle;
+        this._playerService.shuffle = state;
+        this._playerService
+            .toogleShuffleMode(this.currentDevice, state, options)
+            .subscribe((resp) => {
+                this._ref.detectChanges();
+            });
+    }
+
     getPlaybackState(options: Object) {
         this._playerService.getPlaybackState(options).subscribe((resp) => {
             this.playbackState = resp;
@@ -252,7 +272,9 @@ export class PlayerComponent implements OnInit {
         const options = { headers };
         this._playerService
             .setVolume(this.currentDevice, this.volume, options)
-            .subscribe((resp) => {});
+            .subscribe((resp) => {
+                console.log(resp);
+            });
     }
 
     public get currentDevice(): string | undefined {
@@ -265,6 +287,10 @@ export class PlayerComponent implements OnInit {
 
     public get repeatState(): string {
         return this._playerService.repeatState;
+    }
+
+    public get shuffleState(): boolean {
+        return this._playerService.shuffle; 
     }
 
     public get volume(): number {

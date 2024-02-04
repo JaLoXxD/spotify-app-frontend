@@ -127,10 +127,21 @@ export class PlayerService {
         );
     }
 
+    public toogleShuffleMode(
+      deviceId: string | undefined,
+      state: boolean,
+      options: Object
+    ): Observable<any> {
+        return this._http.put(
+            `${this._spotifyApiUrl}/me/player/shuffle?state=${state}&device_id=${deviceId}`,
+            {},
+            options
+        );	
+    }
+
     public startSpotifyPlayer(access_token: string) {
-        console.log(access_token);
+      console.log("enter to start spotify player")
         window.onSpotifyWebPlaybackSDKReady = () => {
-            console.log('spotify script loaded');
             this.player = new Spotify.Player({
                 name: 'custom player',
                 getOAuthToken: (cb) => {

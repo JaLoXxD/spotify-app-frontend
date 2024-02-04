@@ -10,7 +10,7 @@
     </div>
     <div class="controls d-flex justify-content-center flex-column align-items-center">
         <div class="buttons">
-            <button class="single-btn"><i class="fa-solid fa-shuffle"></i></button>
+            <button class="single-btn" [ngClass]="{'repeat-on': shuffleState}" (click)="toogleShuffleMode()"><i class="fa-solid fa-shuffle"></i></button>
             <button class="single-btn" (click)="previousTrack()"><i class="fa-solid fa-backward"></i></button>
             <button class="single-btn" *ngIf="!isPlaying" (click)="tooglePlayer()"><i
                     class="fa-solid fa-circle-play"></i></button>

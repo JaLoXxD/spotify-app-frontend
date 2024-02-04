@@ -82,7 +82,7 @@ export class TracksListComponent implements OnInit {
         }
         const body = {
             position_ms: 0,
-            uris: [uri],
+            uris: this._orderTracks(uri),
         };
         const headers = new HttpHeaders({
             Authorization: this._userService.userToken.value || '',
@@ -100,6 +100,15 @@ export class TracksListComponent implements OnInit {
                 },
             });
     };
+
+    private _orderTracks(trackUri: string): Array<string> | undefined {
+      const tracks = this.tracks?.map((item) => item.track.uri);
+      const index = tracks?.indexOf(trackUri);
+      if (index !== -1) {
+        return tracks?.slice(index).concat(tracks?.slice(0, index));
+      }
+      return tracks;
+    }
 
     public get currentDevice(): string | undefined {
         return this._playerService.currentDevice;
